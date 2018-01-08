@@ -1,0 +1,27 @@
+upstream sharedprogramming {
+  server 127.0.0.1:8000;
+  keepalive 64;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+
+    root /var/www/sharedprogramming;
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name idp.bastiangeneugelijk.com;
+
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    	proxy_set_header Host $http_host;
+    	proxy_set_header X-NginX-Proxy true;
+    	proxy_http_version 1.1;
+    	proxy_set_header Upgrade $http_upgrade;
+    	proxy_set_header Connection "upgrade";
+    	proxy_max_temp_file_size 0;
+    	proxy_pass http://sharedprogramming/;
+    	proxy_redirect off;
+    	proxy_read_timeout 240s;
+   }
+}

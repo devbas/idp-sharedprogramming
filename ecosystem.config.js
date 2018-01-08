@@ -31,8 +31,8 @@ module.exports = {
       user : 'lionoda',
       host : '37.97.206.81',
       ref  : 'origin/master',
-      repo : 'git@bitbucket.org:lionoda/rdftagger.git',
-      path : '/var/www/production',
+      repo : 'git@github.com:devbas/idp-sharedprogramming.git,
+      path : '/var/www/sharedprogramming',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
     }
   }
