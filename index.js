@@ -61,6 +61,18 @@ io.on('connection', (client) => {
   client.on('subscribeToEditor', (editorValue) => {
     client.broadcast.emit('newValue', editorValue);
   });
+
+  client.on('registerCursor', () => {
+    console.log('lits register this');
+    cursorId = Math.random().toString(36).substring(2, 15) // Generate unique cursor hash
+    client.emit('assignedCursorId', cursorId);
+  })
+  
+  client.on('updateCursor', (cursor) => {
+    console.log('update following cursor: ', cursor)
+    client.broadcast.emit('cursorUpdate', { cursorId: cursor.cursorId, position: cursor.position })
+  })
+  
 });
 
 var port = 8888; 

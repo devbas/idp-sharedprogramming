@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Tree = () => (
-  <div>Hello Tree</div>
+  <div className="tree">Hello Tree</div>
 )
 
 export default Tree;
