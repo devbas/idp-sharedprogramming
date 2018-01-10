@@ -20,35 +20,54 @@ class Editor extends Component {
 
     this.state = {
       editorValue: null, 
-      lastEmittedValue: null, 
+      lastUpdate: null, 
       cursorId: false, 
-      markers: []
+      markers: [], 
+      socketInserted: false
     }
 
     this.updateEditorCursor = this.updateEditorCursor.bind(this)
 
     this.subscribeToEditorValue((err, editorValue) => {
-      if(editorValue != this.state.editorValue && editorValue.length > 0) {
-        this.setState({ 
-          editorValue: editorValue, 
-          lastEmittedValue: editorValue 
-        });
+      this.setState({ 
+        lastUpdate: editorValue
+      });
+      console.log('editorValue: ', editorValue, this.editor.getSession().getLength())
 
-        let cursor = this.editor.getCursorPosition();
+      //if(editorValue.end.row > this.editor.getSession().getLength()) {
+      //  this.editor.getSession().getDocument().insertNewLine()
+      //}
 
-        console.log('old cursor position: ', cursor)
+      let range = new Range({
+        start: {
+          row: editorValue.start.row, 
+          column: editorValue.start.column
+        }, 
+        end:{
+          row: editorValue.end.row, 
+          column: editorValue.end.column
+        }
+      })
 
-        this.editor.session.replace({
-          start: {row: 0, column: 0},
-          end: {row: 1000, column: Number.MAX_VALUE}
-        }, editorValue)
-
-        console.log('lets set cursor position again: ', cursor)
-
-        this.editor.moveCursorTo(cursor.row, cursor.column)
-
-        // Set cursor position
+      if(editorValue.action === 'insert') {
+        this.editor.getSession().getDocument().insert(editorValue.start, editorValue.lines[0])
+        this.setState({ socketInserted: true })
+      } else if(editorValue.action === 'remove') {
+        console.log('editorValue: ', editorValue)
+        
+        console.log('range: ', range)
+        this.editor.getSession().getDocument().remove({ start: editorValue.start, end: editorValue.end })
       }
+      
+
+      //let cursor = this.editor.getCursorPosition();
+
+      //console.log('old cursor position: ', cursor)
+
+      //console.log('lets set cursor position again: ', cursor)
+
+      //this.editor.moveCursorTo(cursor.row, cursor.column)
+
     })
 
     // Register new cursor
@@ -72,16 +91,24 @@ class Editor extends Component {
       minLines: 50
     }) 
 
-    this.editor.getSession().selection.on('changeCursor', (e) => {
+    this.editor.session.replace({
+      start: {row: 0, column: 0},
+      end: {row: 1000, column: Number.MAX_VALUE}
+    }, '')
+
+    this.editor.getSession().on('change', (e) => {
       let editorValue = this.editor.getValue();
-      console.log('editorValue state: ', this.state.editorValue)
+
+      console.log('e: ', e, ' editorValue: ', editorValue)
 
       let cursor = this.editor.selection.getCursor();
 
       socket.emit('updateCursor', { cursorId: this.state.cursorId, position: { row: cursor.row, column: cursor.column } }) 
       
-      if(editorValue != this.state.lastEmittedValue) {
-        socket.emit('subscribeToEditor', editorValue);
+      if(!this.state.socketInserted) {
+        socket.emit('subscribeToEditor', e);
+      } else {
+        this.setState({ socketInserted: false })
       }
     })
   }
@@ -127,6 +154,7 @@ class Editor extends Component {
           }
          }, 
          (html, callback) => {
+
           let start = config.firstRow
           let end = config.lastRow
           let cursors = this.cursors
@@ -137,7 +165,13 @@ class Editor extends Component {
               continue
             } else if(cursor.row > end) {
               break
+              // Add new line
             } else {
+
+              //if(cursor.row > self.editor.getSession().getLength()) {
+              //  self.editor.getSession().getDocument().insertNewLine({ row: cursor.row, column: 0 })
+              //}
+
               let screenPos = session.documentToScreenPosition(cursor)
 
               let height = config.lineHeight
