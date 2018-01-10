@@ -31,7 +31,7 @@ module.exports = {
       user : 'lionoda',
       host : '37.97.206.81',
       ref  : 'origin/master',
-      repo : 'git@github.com:devbas/idp-sharedprogramming.git',
+      repo : 'https://github.com/devbas/idp-sharedprogramming.git',
       path : '/var/www/sharedprogramming',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
     }
