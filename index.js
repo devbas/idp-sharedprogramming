@@ -53,7 +53,7 @@ app.use(function(err, req, res, next) {
 
 app.disable('x-powered-by');
 
-var ioPort = 8000;
+var ioPort = 8002;
 io.listen(ioPort);
 console.log('Socket listening on port: ', ioPort)
 
