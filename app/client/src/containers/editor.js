@@ -11,7 +11,7 @@ import async from 'async'
 import {
 	Link
 } from 'react-router-dom'; 
-const socket = openSocket('http://10.2.12.30:8000');
+const socket = openSocket('http://localhost:8000');
 
 class Editor extends Component {
 
