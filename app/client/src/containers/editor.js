@@ -7,10 +7,11 @@ import 'brace/theme/monokai';
 import openSocket from 'socket.io-client';
 import CustomCursor from '../components/customCursor'
 import _ from 'lodash'
+import async from 'async'
 import {
 	Link
 } from 'react-router-dom'; 
-const socket = openSocket('http://192.168.1.35:8000');
+const socket = openSocket('http://10.2.12.30:8000');
 
 class Editor extends Component {
 
@@ -20,21 +21,33 @@ class Editor extends Component {
     this.state = {
       editorValue: null, 
       lastEmittedValue: null, 
-      cursorId: false
+      cursorId: false, 
+      markers: []
     }
 
+    this.updateEditorCursor = this.updateEditorCursor.bind(this)
+
     this.subscribeToEditorValue((err, editorValue) => {
-      console.log('new editorValue: ', editorValue, err)
       if(editorValue != this.state.editorValue && editorValue.length > 0) {
         this.setState({ 
           editorValue: editorValue, 
           lastEmittedValue: editorValue 
         });
 
+        let cursor = this.editor.getCursorPosition();
+
+        console.log('old cursor position: ', cursor)
+
         this.editor.session.replace({
           start: {row: 0, column: 0},
           end: {row: 1000, column: Number.MAX_VALUE}
         }, editorValue)
+
+        console.log('lets set cursor position again: ', cursor)
+
+        this.editor.moveCursorTo(cursor.row, cursor.column)
+
+        // Set cursor position
       }
     })
 
@@ -43,12 +56,8 @@ class Editor extends Component {
       socket.emit('registerCursor');
     }
 
-    this.updateEditorCursor = this.updateEditorCursor.bind(this)
-
     socket.on('assignedCursorId', cursorId => this.setState({ cursorId: cursorId }))
     socket.on('cursorUpdate', cursor => this.updateEditorCursor(cursor))
-
-    
   }
   
   componentDidMount() {
@@ -62,19 +71,9 @@ class Editor extends Component {
       maxLines: Infinity, 
       minLines: 50
     }) 
-    
-    console.log('componsned mounted', this.state)
-
-    if(this.state.editorValue) {
-      this.editor.session.replace({
-        start: {row: 0, column: 0},
-        end: {row: 1000, column: Number.MAX_VALUE}
-      }, this.state.editorValue)
-    }
 
     this.editor.getSession().selection.on('changeCursor', (e) => {
       let editorValue = this.editor.getValue();
-      this.setState({ editorValue: editorValue}) 
       console.log('editorValue state: ', this.state.editorValue)
 
       let cursor = this.editor.selection.getCursor();
@@ -89,74 +88,93 @@ class Editor extends Component {
 
 
   updateEditorCursor(cursor) {
-    /*var marker = {}
-    marker.cursors = [{row: cursor.row, column: cursor.column}]
-    marker.update = function(html, markerLayer, session, config) {
-
-      let start = config.firstRow, end = config.lastRow;
-      let cursors = this.cursors
-      for (let i = 0; i < cursors.length; i++) {
-        let pos = this.cursors[i];
-        if (pos.row < start) {
-          continue
-        } else if (pos.row > end) {
-          break
-        } else {
-          // compute cursor position on screen
-          // this code is based on ace/layer/marker.js
-          let screenPos = session.documentToScreenPosition(pos)
-
-          let height = config.lineHeight;
-          let cursorWidth = 2;
-          let width = config.characterWidth;
-          let top = markerLayer.$getTop(screenPos.row, config);
-          let left = markerLayer.$padding + screenPos.column * width;
-          // can add any html here
-          
-          //var customCursor = 
-
-          //"<div class='customCursor' id='", cursor.cursorId, "' style='",
-          //  "height:", height, "px;",
-          //  "top:", top, "px;",
-          //  "left:", left, "px; width:", cursorWidth, "px'></div>"
-          let customCursor = `<div className="custom-cursor" id="${cursor.cursorId}" style="height: ${height}px; top: ${top}px; left: ${left}px; width: ${cursorWidth}px;"></div>`
-          
-          html = _.remove(html, (item) => {
-            if(item.includes(cursor.cursorId)) return item
-            //return item
-          })
-
-          console.log('html', html)
-
-          html.push(
-            customCursor 
-          );
-        }
-      }
-    }
-
-    marker.redraw = function() {
-      this.session._signal("changeFrontMarker");
-    }
     
-    marker.addCursor = function() {
-    // add to this cursors
+    if(cursor.cursorId !== this.state.cursorId) {
 
-    // trigger redraw
-      marker.redraw()
+      let stateMarkers = this.state.markers; 
+
+      stateMarkers = _.map(stateMarkers, (marker) => {
+        if(marker.cursorId === cursor.cursorId) {
+          return { cursorId: cursor.cursorId, row: cursor.position.row, column: cursor.position.column }
+        } else {
+          return marker
+        }
+      })
+
+      if(_.filter(stateMarkers, { cursorId: cursor.cursorId }).length === 0) {
+        stateMarkers.push(cursor)
+      }
+      
+      this.setState({ markers: stateMarkers })
+
+      let self = this;
+      let marker = {};
+      marker.cursors = this.state.markers;
+      marker.update = function(html, markerLayer, session, config) {
+        async.waterfall([
+         (callback) => {
+          for(let i = 0; html.length >= i; i++) {
+
+            if(html[i] && html[i].includes(cursor.cursorId)) {
+              delete html[i]
+            }
+
+            if(i >= html.length) {
+              callback(false, html)
+              break;
+              
+            }
+          }
+         }, 
+         (html, callback) => {
+          let start = config.firstRow
+          let end = config.lastRow
+          let cursors = this.cursors
+
+          for (let i = 0; i < cursors.length; i++) {
+            let cursor = cursors[i]
+            if(cursor.row < start) {
+              continue
+            } else if(cursor.row > end) {
+              break
+            } else {
+              let screenPos = session.documentToScreenPosition(cursor)
+
+              let height = config.lineHeight
+              let cursorWidth = 2; 
+              let width = config.characterWidth;
+              let top = markerLayer.$getTop(screenPos.row, config);
+              let left = markerLayer.$padding + screenPos.column * width;
+
+              let customCursor = `<div class="custom-cursor" id="${cursor.cursorId}" style="height: ${height}px; top: ${top}px; left: ${left}px; width: ${cursorWidth}px;"></div>`;
+            
+              html.push(customCursor)
+            }
+          }
+         }
+        ])
+        
+      }
+
+      marker.redraw = function() {
+        this.session._signal("changeFrontMarker");
+      }
+
+      marker.addCursor = function() {
+        marker.redraw()
+      }
+
+      marker.session = this.editor.session;
+      marker.session.addDynamicMarker(marker, true)
     }
-    marker.session = this.editor.session;
-    marker.session.addDynamicMarker(marker, true)  */
 
   }
 
   subscribeToEditorValue(callback) {
-    console.log('hiiii')
     socket.on('newValue', newValue => callback(false, newValue))
   }
 
   render() {
-    console.log('we are done')
     return(
       <div>
         <div className="arrow arrow-top">CLICK</div>

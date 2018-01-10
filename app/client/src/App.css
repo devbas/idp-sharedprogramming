@@ -116,3 +116,9 @@
 .background-red {
   background-color: #880000
 }
+
+.custom-cursor {
+  background-color: #880000;
+  position: absolute;
+  z-index: 9999999;
+}
