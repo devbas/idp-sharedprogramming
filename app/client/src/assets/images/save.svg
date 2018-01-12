@@ -1,0 +1,36 @@
+<svg width="42" height="42" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Vector</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(-279 2499)">
+<rect x="279" y="-2499" width="42" height="42" fill="#E5E5E5"/>
+<clipPath id="clip-0" clip-rule="evenodd">
+<path d="M -1138 -2618L 1196 -2618L 1196 -1525L -1138 -1525L -1138 -2618Z" fill="#FFFFFF"/>
+</clipPath>
+<g id="Frame" clip-path="url(#clip-0)">
+<path d="M -1138 -2618L 1196 -2618L 1196 -1525L -1138 -1525L -1138 -2618Z" fill="#E0E0E0"/>
+<g id="OptionsBalk">
+<g id="Rectangle" filter="url(#filter0_d)">
+<use xlink:href="#path0_fill" transform="translate(46 -2535)" fill="#FFFFFF"/>
+</g>
+<g id="ic_save_black_24px">
+<g id="Vector">
+<use xlink:href="#path1_fill" transform="translate(279 -2499)" fill="#212121" fill-opacity="0.8"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_d" filterUnits="userSpaceOnUse" x="38" y="-2540" width="1080" height="136" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255 0"/>
+<feOffset dx="2" dy="5"/>
+<feGaussianBlur stdDeviation="5"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<path id="path0_fill" d="M 0 5C 0 2.23858 2.23858 0 5 0L 1055 0C 1057.76 0 1060 2.23858 1060 5L 1060 111C 1060 113.761 1057.76 116 1055 116L 5.00001 116C 2.23859 116 0 113.761 0 111L 0 5Z"/>
+<path id="path1_fill" d="M 32.6667 0L 4.66667 0C 2.07667 0 0 2.1 0 4.66667L 0 37.3333C 0 39.9 2.07667 42 4.66667 42L 37.3333 42C 39.9 42 42 39.9 42 37.3333L 42 9.33333L 32.6667 0ZM 21 37.3333C 17.1267 37.3333 14 34.2067 14 30.3333C 14 26.46 17.1267 23.3333 21 23.3333C 24.8733 23.3333 28 26.46 28 30.3333C 28 34.2067 24.8733 37.3333 21 37.3333ZM 28 14L 4.66667 14L 4.66667 4.66667L 28 4.66667L 28 14Z"/>
+</defs>
+</svg>

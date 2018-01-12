@@ -7,12 +7,8 @@
 }
 
 .editor-mirror.ace_editor {
-  position: absolute;
   width: 100%;
   height: 100vh; 
-  right: 0;
-  top: 0;
-  bottom: 0;
   /*font-family: 'Courier,monospace' !important;*/
   font-size: 12px;
 }
@@ -69,8 +65,6 @@
 
 .path {
   fill: none;
-  stroke-width: 1px;
-  stroke: black;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
@@ -87,13 +81,36 @@
   width: 100%;
 }
 
+.toolbar-box::before {
+  content: ""; 
+  position: absolute; 
+  border-bottom: 18px solid #fff; 
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  top: -18px;
+  margin-left: calc(50% - 15px)
+}
+
+.toolbar {
+  width: 1060px; 
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .toolbar-box {
-  width: 100%; 
-  background-color: #eee;
-  position: absolute;
-  top: 0; 
-  box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
-  padding: 10px
+  position: relative;
+  width: 1060px; 
+  background: #FFFFFF;
+  box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.35);
+  border-radius: 5px;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+  padding-top: 37px;
+  padding-bottom: 37px;
+  float: left;
+  padding-left: 56px;
 }
 
 .draw-color-list {
@@ -121,4 +138,193 @@
   background-color: #880000;
   position: absolute;
   z-index: 9999999;
+}
+
+.tree-box {
+  width: 521px;
+  background-color: #E0E0E0;
+  height: 100vh;
+  position: fixed;
+  z-index: 999999;
+  float: left; 
+}
+
+.tree-item-box {
+  width: 521px;
+  background-color: '#fff'; 
+  position: relative;
+  float: left; 
+  margin-bottom: 15px;
+  background: #FFFFFF;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+}
+
+.color-label {
+  position: absolute;
+  width: 15px;
+  height: 135px;
+  left: 0px;
+  top: 0px;
+
+  border-radius: 2px 0px 0px 2px;
+}
+
+.left {
+  float: left; 
+}
+
+.item-description {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  font-size: 12px;
+  color: #555555;
+  max-width: 210px;
+  padding-left: 25px;
+  padding-top: 13px;
+  margin-left: -1px; /* Border correction */
+  border-left: 1px solid #cccccc;
+}
+
+.item-content-box {
+  margin-top: 10px;
+  margin-bottom: 14px;
+  margin-left: 15px;
+}
+
+.item-meta-content {
+  padding-left: 12px;
+  padding-right: 20px;
+  padding-top: 13px;
+  padding-bottom: 8px;
+  border-right: 1px solid #CCCCCC;
+}
+
+.item-date {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  font-size: 16px;
+  color: #333333;
+}
+
+.duration-label {
+  opacity: 0.5
+}
+
+.duration-label, .duration-value {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  font-size: 12px;
+  color: #555555;
+}
+
+.tree-box .header {
+  margin-top: 27px;
+  margin-bottom: 27px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  font-size: 36px;
+  text-align: center;
+  color: #9E9E9E;
+}
+
+.item-play {
+  background-image: url('./assets/images/play.svg');
+  width: 50px;
+  height: 50px;
+  margin-top: 33px;
+  margin-left: 15px;
+  background-size: contain;
+}
+
+.item-delete {
+  background-image: url('./assets/images/delete.svg');
+  width: 14px;
+  height: 18px;
+  background-size: contain;
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+.record-icon {
+  background-image: url('./assets/images/record.svg');
+  height: 42px;
+  width: 42px;
+  background-size: contain;
+  margin-right: 50px;
+  background-repeat: no-repeat
+}
+
+.pause-icon {
+  background-image: url('./assets/images/pause.svg');
+  height: 42px;
+  width: 42px;
+  background-size: contain;
+  margin-right: 50px;
+  background-repeat: no-repeat
+}
+
+.save-icon {
+  background-image: url('./assets/images/save.svg');
+  height: 42px;
+  width: 42px;
+  background-size: contain;
+  margin-right: 50px;
+  background-repeat: no-repeat
+}
+
+.toolbar-divider {
+}
+
+.edit-icon {
+  background-image: url('./assets/images/edit.svg');
+  height: 42px;
+  width: 42px;
+  background-size: contain;
+  margin-right: 50px;
+  background-repeat: no-repeat
+}
+
+.stroke-icon {
+  background-image: url('./assets/images/stroke.svg');
+  height: 42px;
+  width: 42px;
+  background-size: contain;
+  margin-right: 50px;
+  background-repeat: no-repeat
+}
+
+.color-icon {
+  background-image: url('./assets/images/color.svg');
+  height: 42px;
+  width: 42px;
+  background-size: contain;
+  margin-right: 50px;
+  background-repeat: no-repeat
+}
+
+.settings-icon {
+  background-image: url('./assets/images/settings.svg');
+  height: 42px;
+  width: 42px;
+  background-size: contain;
+  margin-right: 50px;
+  background-repeat: no-repeat
+}
+
+.help-icon {
+  background-image: url('./assets/images/help.svg');
+  height: 42px;
+  width: 42px;
+  background-size: contain;
+  margin-right: 50px;
+  background-repeat: no-repeat
 }

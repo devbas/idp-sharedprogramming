@@ -23,10 +23,12 @@ class Editor extends Component {
       lastUpdate: null, 
       cursorId: false, 
       markers: [], 
-      socketInserted: false
+      socketInserted: false, 
+      showTree: false
     }
 
     this.updateEditorCursor = this.updateEditorCursor.bind(this)
+    this.onTreeToggleClick = this.onTreeToggleClick.bind(this)
 
     this.subscribeToEditorValue((err, editorValue) => {
       this.setState({ 
@@ -208,22 +210,20 @@ class Editor extends Component {
     socket.on('newValue', newValue => callback(false, newValue))
   }
 
+  onTreeToggleClick() {
+    console.log('click!')
+    this.setState(({ showTree }) => ({
+      showTree: !showTree
+    }))
+  }
+
   render() {
     return(
       <div>
-        <div className="arrow arrow-top">CLICK</div>
-        <Link to="/canvas">
-          <div className="arrow arrow-right">CLICK</div>
-        </Link>
-        <Link to="/reload">
-          <div className="arrow arrow-bottom">CLICK</div>
-        </Link>
-        <Link to="/tree">
-          <div className="arrow arrow-left">CLICK</div>
-        </Link>
-        <div className="editor-mirror" id="editor-mirror">
-          <div ref={this.updateRef} style={{width: '100%', height: '100%'}}></div>
-        </div>
+        <EditorComponent 
+          updateRef={this.updateRef}
+          onTreeToggleClick={this.onTreeToggleClick}
+          showTree={this.state.showTree}/>
       </div>
     )
   }

@@ -9,7 +9,7 @@ class Toolbar extends Component {
 
   render() {
     return(
-      <ToolbarComponent/>
+      <ToolbarComponent onClick={this.props.onToolbarClick}/>
     )
   }
 
