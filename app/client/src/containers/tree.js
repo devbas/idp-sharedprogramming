@@ -21,7 +21,7 @@ class Tree extends Component {
 
   render() {
     return(
-      <TreeComponent in={this.props.in} renderItem={this.renderItem}/>
+      <TreeComponent in={this.props.in} renderItem={this.renderItem} onTreeClose={this.props.onTreeClose}/>
     )
   }
 

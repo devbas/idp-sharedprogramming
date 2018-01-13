@@ -24,17 +24,21 @@ class Editor extends Component {
       cursorId: false, 
       markers: [], 
       socketInserted: false, 
-      showTree: false
+      showTree: false, 
+      showToolbar: false
     }
 
     this.updateEditorCursor = this.updateEditorCursor.bind(this)
     this.onTreeToggleClick = this.onTreeToggleClick.bind(this)
+    this.onToolbarToggleClick = this.onToolbarToggleClick.bind(this)
 
     this.subscribeToEditorValue((err, editorValue) => {
       this.setState({ 
         lastUpdate: editorValue
       });
-      console.log('editorValue: ', editorValue, this.editor.getSession().getLength())
+
+
+      console.log('updated editorValue: ', editorValue, this.editor.getSession().getLength())
 
       //if(editorValue.end.row > this.editor.getSession().getLength()) {
       //  this.editor.getSession().getDocument().insertNewLine()
@@ -52,23 +56,35 @@ class Editor extends Component {
       })
 
       if(editorValue.action === 'insert') {
-        this.editor.getSession().getDocument().insert(editorValue.start, editorValue.lines[0])
+        let startLine = editorValue.start.row
+        console.log('startline start: ', startLine)
+        /*if(editorValue.lines.length > 1) {
+          editorValue.lines.forEach((line) => {
+            this.setState({ socketInserted: true })
+            startLine = startLine + 1; 
+            console.log('startLine: ', startLine)
+            this.editor.getSession().getDocument().insertNewLine({
+              start: {
+                row: editorValue.start.row + startLine, 
+                column: editorValue.start.column
+              }
+            });
+
+            this.setState({ socketInserted: true })
+            this.editor.getSession().getDocument().insert({ row: startLine, column: 0 }, line)        
+          })
+        } else {*/
         this.setState({ socketInserted: true })
+        this.editor.getSession().getDocument().insert(editorValue.start, editorValue.lines[0])    
+        //}
+
+        //this.editor.getSession().getDocument().insert(editorValue.start, editorValue.lines[0])        
       } else if(editorValue.action === 'remove') {
         console.log('editorValue: ', editorValue)
         
         console.log('range: ', range)
         this.editor.getSession().getDocument().remove({ start: editorValue.start, end: editorValue.end })
       }
-      
-
-      //let cursor = this.editor.getCursorPosition();
-
-      //console.log('old cursor position: ', cursor)
-
-      //console.log('lets set cursor position again: ', cursor)
-
-      //this.editor.moveCursorTo(cursor.row, cursor.column)
 
     })
 
@@ -217,13 +233,21 @@ class Editor extends Component {
     }))
   }
 
+  onToolbarToggleClick() {
+    this.setState(({ showToolbar }) => ({
+      showToolbar: !showToolbar
+    }))
+  }
+
   render() {
     return(
-      <div>
+      <div className="editor-box">
         <EditorComponent 
           updateRef={this.updateRef}
           onTreeToggleClick={this.onTreeToggleClick}
-          showTree={this.state.showTree}/>
+          showTree={this.state.showTree}
+          onToolbarToggleClick={this.onToolbarToggleClick}
+          showToolbar={this.state.showToolbar}/>
       </div>
     )
   }

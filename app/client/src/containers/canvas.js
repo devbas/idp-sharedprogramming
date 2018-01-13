@@ -43,6 +43,7 @@ class Canvas extends Component {
     this.handleMouseUp = this.handleMouseUp.bind(this);
     //this.relativeCoordinatesForEvent = this.relativeCoordinatesForEvent.bind(this);
     this.onToolbarClick = this.onToolbarClick.bind(this);
+    this.onStrokeUpdate = this.onStrokeUpdate.bind(this); 
   }
 
   componentDidMount() {
@@ -86,8 +87,7 @@ class Canvas extends Component {
     const boundingRect = this.refs.drawArea.getBoundingClientRect();
     return new Map({
       x: mouseEvent.clientX - boundingRect.left,
-      y: mouseEvent.clientY - boundingRect.top,
-      style: { thickness: this.state.thickness, color: this.state.color }
+      y: mouseEvent.clientY - boundingRect.top
       // style: current style
     });
   }
@@ -96,10 +96,16 @@ class Canvas extends Component {
 
   }
 
+  onStrokeUpdate(value) {
+    this.setState({
+      stroke: value
+    })
+  }
+
   render() {
     return (
       <div className="canvas-box">
-        <Toolbar onClick={this.onToolbarClick}/>
+        <Toolbar onClick={this.onToolbarClick} onStrokeUpdate={this.onStrokeUpdate}/>
         <Link to="/">
           <div className="arrow arrow-left">CLICK</div>
         </Link>

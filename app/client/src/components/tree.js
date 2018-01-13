@@ -1,5 +1,6 @@
 import React from 'react';
 import Transition from 'react-transition-group/Transition';
+import '../assets/stylesheets/animated.css';
 
 const duration = 300;
 
@@ -40,11 +41,11 @@ const content = [
   },
 ]
 
-const Tree = ({ in: inProp, renderItem }) => (
+const Tree = ({ in: inProp, renderItem, onTreeClose }) => (
   <div>
-    <div className="tree-box">
+    <div className="tree-box animated slideInLeft">
       <div className="header">
-        Session List
+        <span onClick={onTreeClose}>close</span> Session List
       </div>
       <div className="content">
         {content.map(renderItem)}

@@ -7,10 +7,126 @@
 }
 
 .editor-mirror.ace_editor {
-  width: 100%;
+  width: calc(100% - 345px);
   height: 100vh; 
   /*font-family: 'Courier,monospace' !important;*/
   font-size: 12px;
+  float: left; 
+}
+
+.file-tree {
+  width: 332px; 
+  float: left; 
+  background: #E0E0E0;
+  height: 100vh; 
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
+  padding-left: 13px;
+}
+
+.file-tree .title {
+  margin-top: 44px;
+  margin-left: 28px; 
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: bold;
+  line-height: normal;
+  font-size: 30px;
+  margin-bottom: 27px;
+  color: #000000;
+}
+
+.file-tree .level {
+  margin-left: 28px;
+}
+
+.file-tree .arrow-down-icon {
+  background-image: url('./assets/images/arrow-down.svg');
+  width: 12.5px;
+  height: 6.25px; 
+  float: left; 
+  background-size: cover; 
+  background-repeat: no-repeat; 
+  margin-top: 10px;
+}
+
+.file-tree .arrow-left-icon {
+  background-image: url('./assets/images/arrow-left.svg');
+  width: 6.25px;
+  height: 12.5px; 
+  float: left; 
+  background-size: cover; 
+  background-repeat: no-repeat; 
+  margin-top: 6px;
+}
+
+.file-tree .folder-open-icon {
+  background-image: url('./assets/images/folder.svg');
+  background-size: cover; 
+  background-repeat:  no-repeat;
+  width: 29px; 
+  height: 23px; 
+  margin-left: 13px; 
+  float: left; 
+}
+
+.file-tree .folder-closed-icon {
+  background-image: url('./assets/images/folder-closed.svg');
+  background-size: cover; 
+  background-repeat:  no-repeat;
+  width: 29px; 
+  height: 23px; 
+  margin-left: 13px; 
+  float: left; 
+}
+
+.file-tree .file-label {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  font-size: 25px;
+  color: #9E9E9E;
+  margin-left: 16px; 
+}
+
+.file-tree .level .item {
+  margin-top: 20px;
+}
+
+.html-icon {
+  width: 21px;
+  height: 24px;
+  background-image: url('./assets/images/html-icon.svg');
+  background-size: cover; 
+  background-repeat:  no-repeat;
+  float: left; 
+}
+
+.image-icon {
+  width: 24px;
+  height: 24px;
+  background-image: url('./assets/images/image-icon.svg');
+  background-size: cover; 
+  background-repeat:  no-repeat;
+  float: left; 
+}
+
+.js-icon {
+  width: 27px;
+  height: 30px;
+  background-image: url('./assets/images/js-icon.svg');
+  background-size: cover; 
+  background-repeat:  no-repeat;
+  float: left; 
+}
+
+.css-icon {
+  width: 22px;
+  height: 18px;
+  background-image: url('./assets/images/css-icon.svg');
+  background-size: cover; 
+  background-repeat:  no-repeat;
+  float: left; 
 }
 
 .canvas-box {
@@ -19,6 +135,8 @@
   right: 0; 
   top: 0; 
   bottom: 0; 
+  position: absolute; 
+  z-index: 999999;
 }
 
 .MyCursorClass {
@@ -95,6 +213,11 @@
   width: 1060px; 
   margin-left: auto;
   margin-right: auto;
+  position: absolute;
+  top: 0; 
+  left: 0; 
+  right: 0;
+  z-index: 99999;
 }
 
 .toolbar-box {
@@ -172,6 +295,10 @@
 
 .left {
   float: left; 
+}
+
+.full-width {
+  width: 100%; 
 }
 
 .item-description {
@@ -282,6 +409,11 @@
 }
 
 .toolbar-divider {
+  border: 4px solid rgba(0, 0, 0, 0.2);
+  /*transform: matrix(0, 1, 1, 0, 0, 0);*/
+  margin-right: 70px;
+  height: 42px;
+  margin-left: 20px;
 }
 
 .edit-icon {
@@ -327,4 +459,52 @@
   background-size: contain;
   margin-right: 50px;
   background-repeat: no-repeat
+}
+
+.stroke-menu {
+  position: absolute; 
+  bottom: -92px; 
+  height: 80px;
+  width: 80px;
+  background-color: #fff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.24), 0px 0px 4px rgba(0, 0, 0, 0.12);
+}
+
+.stroke-menu::before {
+  content: "";
+  position: absolute; 
+  border-bottom: 10px solid #fff;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  top: -10px;
+  left: calc(50% - 10px)
+}
+
+.stroke-menu .item {
+  background-color: rgba(77, 77, 77, 0.4);
+  width: 100%; 
+}
+
+.stroke-menu .item.active {
+  background-color: #4D4D4D;
+}
+
+.stroke-menu .item.small {
+  height: 5px;
+  margin-bottom: 5px;
+}
+
+.stroke-menu .item.medium {
+  height: 10px;
+  margin-bottom: 5px;
+}
+
+.stroke-menu .item.large {
+  height: 20px;
+  margin-bottom: 5px;
+}
+
+.stroke-menu .item.ultralarge {
+  height: 30px;
+  margin-bottom: 5px;
 }
