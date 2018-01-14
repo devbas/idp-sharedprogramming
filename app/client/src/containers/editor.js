@@ -3,7 +3,8 @@ import EditorComponent from '../components/editor';
 import * as ace from 'brace';
 import 'brace/mode/html';
 import 'brace/theme/monokai';
-//import { html as htmlBeautify } from 'js-beautify';
+import jsBeautify from 'js-beautify';
+import { html as htmlBeautify, css as cssBeautify } from 'js-beautify';
 import openSocket from 'socket.io-client';
 import CustomCursor from '../components/customCursor'
 import _ from 'lodash'
@@ -11,7 +12,9 @@ import async from 'async'
 import {
 	Link
 } from 'react-router-dom'; 
+import exampleData from '../assets/example-data.json'
 const socket = openSocket('http://localhost:8002');
+
 
 class Editor extends Component {
 
@@ -25,12 +28,19 @@ class Editor extends Component {
       markers: [], 
       socketInserted: false, 
       showTree: false, 
-      showToolbar: false
+      showToolbar: false, 
+      indexHtml: exampleData.index, 
+      styleScript: exampleData.style,
+      jsScript: exampleData.script, 
+      svgLogo: exampleData.svg,
+      currentFileOpen: 'index'
     }
 
     this.updateEditorCursor = this.updateEditorCursor.bind(this)
     this.onTreeToggleClick = this.onTreeToggleClick.bind(this)
     this.onToolbarToggleClick = this.onToolbarToggleClick.bind(this)
+    this.loadInEditor = this.loadInEditor.bind(this)
+    //this.onPreviewClick = this.onPreviewClick.bind(this)
 
     this.subscribeToEditorValue((err, editorValue) => {
       this.setState({ 
@@ -129,6 +139,8 @@ class Editor extends Component {
         this.setState({ socketInserted: false })
       }
     })
+
+    this.loadInEditor('index.html')
   }
 
 
@@ -239,6 +251,64 @@ class Editor extends Component {
     }))
   }
 
+  loadInEditor(key) {
+    if(key === 'index.html') {
+      console.log('load it!');
+      this.setState({
+        currentFileOpen: 'index'
+      })
+
+      this.editor.session.replace({
+        start: {row: 0, column: 0},
+        end: {row: 1000, column: Number.MAX_VALUE}
+      }, htmlBeautify(this.state.indexHtml))
+      this.editor.session.setMode("ace/mode/html")
+    }
+
+    if(key === 'main.css') {
+      this.setState({
+        currentFileOpen: 'style'
+      })
+
+      this.editor.session.replace({
+        start: {row: 0, column: 0},
+        end: {row: 1000, column: Number.MAX_VALUE}
+      }, cssBeautify(this.state.styleScript))
+      this.editor.session.setMode("ace/mode/css")
+      
+    }
+
+    if(key === 'script.js') {
+      this.setState({
+        currentFileOpen: 'script'
+      })
+
+      this.editor.session.replace({
+        start: {row: 0, column: 0},
+        end: {row: 1000, column: Number.MAX_VALUE}
+      }, jsBeautify(this.state.jsScript))
+      this.editor.session.setMode("ace/mode/javascript")
+    }
+
+    if(key === 'logo.svg') {
+      this.setState({
+        currentFileOpen: 'logo'
+      })
+
+      this.editor.session.replace({
+        start: {row: 0, column: 0},
+        end: {row: 1000, column: Number.MAX_VALUE}
+      }, htmlBeautify(this.state.svgLogo))
+      this.editor.session.setMode("ace/mode/html")
+    }
+
+    if(key === 'contact.html') {
+      this.setState({
+        currentFileOpen: 'contact'
+      })
+    }
+  }
+
   render() {
     return(
       <div className="editor-box">
@@ -247,7 +317,11 @@ class Editor extends Component {
           onTreeToggleClick={this.onTreeToggleClick}
           showTree={this.state.showTree}
           onToolbarToggleClick={this.onToolbarToggleClick}
-          showToolbar={this.state.showToolbar}/>
+          showToolbar={this.state.showToolbar}
+          loadInEditor={this.loadInEditor}
+          indexHtml={this.state.indexHtml} 
+          styleScript={this.state.styleScript}
+          jsScript={this.state.jsScript} />
       </div>
     )
   }

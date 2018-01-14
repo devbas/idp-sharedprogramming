@@ -1,7 +1,10 @@
 import React from 'react';
 
-const Reload = () => (
-  <div>Hello Reload</div>
+const Reload = ({ createApplication }) => (
+  <div>
+    Hello Reload
+    <div dangerouslySetInnerHTML={createApplication()}></div>
+  </div>
 )
 
 export default Reload;

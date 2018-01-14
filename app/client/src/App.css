@@ -37,6 +37,7 @@
 
 .file-tree .level {
   margin-left: 28px;
+  cursor: pointer;
 }
 
 .file-tree .arrow-down-icon {
