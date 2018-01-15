@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>arrow-top-thick</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="arrow-right-thick" transform="translate(0.000000, -26.000000)" fill="#FFFFFF" fill-rule="nonzero">
+            <polygon id="arrow-top-thick" transform="translate(7.920000, 33.920000) scale(1, -1) rotate(90.000000) translate(-7.920000, -33.920000) " points="1.77635684e-15 31.92 1.77635684e-15 35.92 9 35.92 5.5 39.42 7.92 41.84 15.84 33.92 7.92 26 5.5 28.42 9 31.92"></polygon>
+        </g>
+    </g>
+</svg>

@@ -19,20 +19,20 @@ const Editor = ({
   <div className="editor">
 
     {!showToolbar &&
-      <div className="arrow arrow-top" onClick={onToolbarToggleClick}>CLICK</div>
+      <div className="arrow arrow-top" onClick={onToolbarToggleClick}></div>
     }
     
     <Link to="/canvas">
-      <div className="arrow arrow-right">CLICK</div>
+      <div className="arrow arrow-right"></div>
     </Link>
 
     <Link to="/reload" indexHtml={indexHtml} styleScript={styleScript} jsScript={jsScript}>
-      <div className="arrow arrow-bottom">CLICK</div>
+      <div className="arrow arrow-bottom"></div>
     </Link>
    
     {!showTree &&
       <div onClick={onTreeToggleClick}>
-        <div className="arrow arrow-left">CLICK</div>
+        <div className="arrow arrow-left"></div>
       </div>
     }
 
