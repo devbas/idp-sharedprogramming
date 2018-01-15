@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Toolbar = ({ 
-  onClick, 
   colorMenuActive,
   onRecordClick, 
   onPauseClick, 
@@ -13,10 +12,19 @@ const Toolbar = ({
   onHelpClick,
   isStrokeActive, 
   isColorActive, 
-  strokeValue }) => (
+  strokeValue, 
+  isRecording }) => (
   <div className="toolbar">
     <div className="toolbar-box">
-      <div className="left record-icon" onClick={onRecordClick}></div>
+
+      {isRecording &&
+        <div className="left recording-icon" onClick={onRecordClick}></div>
+      }
+
+      {!isRecording &&
+        <div className="left record-icon" onClick={onRecordClick}></div>
+      }
+      
       <div className="left pause-icon" onClick={onPauseClick}></div>
       <div className="left save-icon" onClick={onSaveClick}></div>
 

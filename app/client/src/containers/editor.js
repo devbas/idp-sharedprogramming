@@ -9,10 +9,12 @@ import openSocket from 'socket.io-client';
 import CustomCursor from '../components/customCursor'
 import _ from 'lodash'
 import async from 'async'
+import axios from 'axios';
 import {
 	Link
 } from 'react-router-dom'; 
 import exampleData from '../assets/example-data.json'
+
 const socket = openSocket('http://localhost:8002');
 
 
@@ -29,17 +31,19 @@ class Editor extends Component {
       socketInserted: false, 
       showTree: false, 
       showToolbar: false, 
-      indexHtml: exampleData.index, 
-      styleScript: exampleData.style,
-      jsScript: exampleData.script, 
+      indexHtml: false, 
+      styleScript: false,
+      jsScript: false, 
       svgLogo: exampleData.svg,
-      currentFileOpen: 'index'
+      currentFileOpen: 'index', 
+      canvasActive: false
     }
 
     this.updateEditorCursor = this.updateEditorCursor.bind(this)
     this.onTreeToggleClick = this.onTreeToggleClick.bind(this)
     this.onToolbarToggleClick = this.onToolbarToggleClick.bind(this)
     this.loadInEditor = this.loadInEditor.bind(this)
+    this.onToolbarEditClick = this.onToolbarEditClick.bind(this)
     //this.onPreviewClick = this.onPreviewClick.bind(this)
 
     this.subscribeToEditorValue((err, editorValue) => {
@@ -138,6 +142,24 @@ class Editor extends Component {
       } else {
         this.setState({ socketInserted: false })
       }
+    })
+
+    let hostname = 'http://' + window.location.hostname + ':8001';
+
+    axios.get(hostname + '/src/assets/static/index.html')
+    .then((result) => {
+      this.setState({ indexHtml: result.data })
+      console.log('html state: ', this.state.indexHtml)
+    })
+
+    axios.get(hostname + '/src/assets/static/style.css')
+    .then((result) => {
+      this.setState({ styleScript: result.data })
+    })
+
+    axios.get(hostname + '/src/assets/static/script.js')
+    .then((result) => {
+      this.setState({ jsScript: result.data })
     })
 
     this.loadInEditor('index.html')
@@ -243,11 +265,19 @@ class Editor extends Component {
     this.setState(({ showTree }) => ({
       showTree: !showTree
     }))
+
+    this.setState(({ showToolbar }) => ({
+      showToolbar: false
+    }))
   }
 
   onToolbarToggleClick() {
     this.setState(({ showToolbar }) => ({
       showToolbar: !showToolbar
+    }))
+
+    this.setState(({ showTree }) => ({
+      showTree: false
     }))
   }
 
@@ -309,7 +339,16 @@ class Editor extends Component {
     }
   }
 
+  onToolbarEditClick() {
+    // Render canvas
+    console.log('toolbar edit click')
+    this.setState({
+      canvasActive: !this.state.canvasActive
+    })
+  }
+
   render() {
+    console.log('rerender');
     return(
       <div className="editor-box">
         <EditorComponent 
@@ -321,7 +360,9 @@ class Editor extends Component {
           loadInEditor={this.loadInEditor}
           indexHtml={this.state.indexHtml} 
           styleScript={this.state.styleScript}
-          jsScript={this.state.jsScript} />
+          jsScript={this.state.jsScript}
+          onToolbarEditClick={this.onToolbarEditClick}
+          canvasActive={this.state.canvasActive} />
       </div>
     )
   }

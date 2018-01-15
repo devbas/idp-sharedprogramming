@@ -3,6 +3,7 @@ import {
 	Link
 } from 'react-router-dom'; 
 import Tree from '../containers/tree';
+import Toolbar from '../containers/toolbar';
 import Canvas from '../containers/canvas';
 
 const Editor = ({ 
@@ -14,7 +15,9 @@ const Editor = ({
   loadInEditor, 
   indexHtml,
   styleScript,
-  jsScript
+  jsScript, 
+  onToolbarEditClick, 
+  canvasActive
  }) => (
   <div className="editor">
 
@@ -41,6 +44,12 @@ const Editor = ({
     }
 
     {showToolbar &&
+      <div>
+        <Toolbar onEditClick={onToolbarEditClick}/>
+      </div>
+    }
+
+    {canvasActive &&
       <div>
         <Canvas/>
       </div>

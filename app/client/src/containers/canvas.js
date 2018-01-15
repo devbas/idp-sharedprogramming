@@ -105,10 +105,6 @@ class Canvas extends Component {
   render() {
     return (
       <div className="canvas-box">
-        <Toolbar onClick={this.onToolbarClick} onStrokeUpdate={this.onStrokeUpdate}/>
-        <Link to="/">
-          <div className="arrow arrow-left">CLICK</div>
-        </Link>
         <div
           className="draw-area"
           ref="drawArea"

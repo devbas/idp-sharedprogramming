@@ -1,9 +1,10 @@
 import React from 'react';
+import Iframe from 'react-iframe'
 
-const Reload = ({ createApplication }) => (
+const Reload = ({ url }) => (
   <div>
     Hello Reload
-    <div dangerouslySetInnerHTML={createApplication()}></div>
+    <Iframe url={url} style={{width: '400px', height: '400px'}}></Iframe>
   </div>
 )
 

@@ -13,7 +13,7 @@
   font-size: 12px;
   float: left; 
   position: relative;
-  left: 332px;
+  left: 345px;
 }
 
 .file-tree {
@@ -231,6 +231,7 @@
   background-image: url('./assets/images/arrow-left-thick.svg');
   background-size: contain;
   background-size: 20px;
+  position: absolute;
 }
 
 .tree {
@@ -265,7 +266,7 @@
   border-left: 15px solid transparent;
   border-right: 15px solid transparent;
   top: -18px;
-  margin-left: calc(50% - 15px)
+  margin-left: calc(50% - 71px)
 }
 
 .toolbar {
@@ -281,7 +282,6 @@
 
 .toolbar-box {
   position: relative;
-  width: 1060px; 
   background: #FFFFFF;
   box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.35);
   border-radius: 5px;
@@ -293,6 +293,7 @@
   padding-bottom: 37px;
   float: left;
   padding-left: 56px;
+  padding-right: 56px;
 }
 
 .draw-color-list {
@@ -446,7 +447,22 @@
   width: 42px;
   background-size: contain;
   margin-right: 50px;
-  background-repeat: no-repeat
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.recording-icon {
+  width: 40px;
+  height: 40px; 
+  background-color: #FF6666;
+  border-radius: 20px;
+  margin: 1px;
+  margin-right: 51px;
+  animation: blinker 2s ease-in-out infinite;
+}
+
+@keyframes blinker {  
+  50% { opacity: 0; }
 }
 
 .pause-icon {
