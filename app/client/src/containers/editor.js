@@ -15,7 +15,7 @@ import {
 } from 'react-router-dom'; 
 import exampleData from '../assets/example-data.json'
 
-const socket = openSocket('http://localhost:8002');
+const socket = openSocket(window.location.hostname === 'localhost' ? 'http://localhost:8002': 'http:' + window.location.hostname + ':8002');
 
 
 class Editor extends Component {
