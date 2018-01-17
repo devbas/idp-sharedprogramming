@@ -3,6 +3,7 @@ import ModalComponent from '../components/modal';
 
 class Modal extends Component {
   render() {
+    console.log('modal props: ', this.props)
     return(
       <ModalComponent props={this.props}/>
     )

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TreeComponent from '../components/tree';
 import Modal from './modal';
+import _ from 'lodash';
 
 class Tree extends Component {
 
@@ -38,16 +39,37 @@ class Tree extends Component {
           duration: '22:33', 
           description: 'Lorem ipsum dolor amet try-hard lomo yr la croix flannel, tattooed gentrify ramps shoreditch helvetica quinoa literally distillery austin sartorial. Bespoke venmo pitchfork cornhole street art hammock banjo lumbersexual church-key.'
         },
-      ]
+      ], 
+      selectedItem: {}
     }
 
     this.onItemDeleteClick = this.onItemDeleteClick.bind(this);
+    this.modalOnCancel = this.modalOnCancel.bind(this);
+    this.modalOnSubmit = this.modalOnSubmit.bind(this);
   }
 
   onItemDeleteClick(key) {
+  
+    let selectedItem = _.find(this.state.content, { key: key});
+    console.log('selectedItem: ', selectedItem, key)
+
     this.setState({
-      deleteModalIsOpen: !this.state.deleteModalIsOpen
+      deleteModalIsOpen: !this.state.deleteModalIsOpen, 
+      selectedItem: selectedItem
     })
+  }
+
+  modalOnCancel() {
+    this.setState({ deleteModalIsOpen: !this.state.deleteModalIsOpen })
+  }
+
+  modalOnSubmit(key) {
+    this.setState((prevState) => {
+      return {
+        deleteModalIsOpen: !prevState.deleteModalIsOpen,
+        content: _.filter(prevState.content, (item) => item.key !== key)
+      }
+    }) 
   }
 
   render() {
@@ -59,7 +81,8 @@ class Tree extends Component {
             type='delete'
             body={this.state.deleteSessionBody}
             onCancel={this.modalOnCancel} 
-            onSubmit={this.modalOnSubmit}/>
+            onSubmit={this.modalOnSubmit}
+            selectedItem={this.state.selectedItem}/>
         }
 
         <TreeComponent 
