@@ -15,7 +15,8 @@ const Toolbar = ({
   strokeValue, 
   isRecording, 
   onCloseClick, 
-  isPaused }) => (
+  isPaused
+}) => (
   <div className="toolbar">
     <div className="toolbar-box animated slideInDown">
 

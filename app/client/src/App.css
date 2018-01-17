@@ -270,7 +270,7 @@
 }
 
 .toolbar {
-  width: 1060px; 
+  width: 852px; 
   margin-left: auto;
   margin-right: auto;
   position: absolute;
@@ -462,22 +462,27 @@
 
 .record-icon {
   background-image: url('./assets/images/record.svg');
-  height: 42px;
-  width: 42px;
-  background-size: contain;
-  margin-right: 50px;
+  height: 50px;
+  width: 50px;
+  background-size: 40%;
   background-repeat: no-repeat;
   cursor: pointer;
+  background-position: center;
+  transition: background-color ease-in-out 0.1s
 }
 
 .recording-icon {
-  width: 40px;
-  height: 40px; 
+  width: 35px;
+  height: 35px; 
   background-color: #FF6666;
   border-radius: 20px;
   margin: 1px;
   margin-right: 51px;
   animation: blinker 2s ease-in-out infinite;
+  margin-top: 25px;
+  margin-bottom: 18px;
+  margin-left: 29px;
+  margin-right: 21px;
 }
 
 @keyframes blinker {  
@@ -528,7 +533,7 @@
 .toolbar-divider {
   border: 4px solid rgba(0, 0, 0, 0.2);
   /*transform: matrix(0, 1, 1, 0, 0, 0);*/
-  margin-right: 70px;
+  margin-right: 20px;
   height: 42px;
   margin-left: 20px;
   margin-top: 18px;
@@ -552,7 +557,9 @@
 .help-icon, 
 .save-icon, 
 .pause-icon, 
-.play-icon {
+.play-icon, 
+.record-icon, 
+.close-icon {
   padding-top: 18px;
   padding-bottom: 18px;
   padding-left: 21px;
@@ -566,7 +573,9 @@
 .help-icon:hover, 
 .save-icon:hover, 
 .pause-icon:hover, 
-.play-icon:hover {
+.play-icon:hover, 
+.record-icon:hover, 
+.close-icon:hover {
   background-color: #eeeeee;
   cursor: pointer; 
   transition: background-color ease-in-out 0.1s;
@@ -683,14 +692,14 @@
 
 .close-icon {
   background-image: url('./assets/images/cross-close.svg'); 
-  width: 40px;
-  height: 40px;
-  background-size: contain; 
+  width: 50px;
+  height: 50px;
+  background-size: 40%;
+  background-position: center; 
   background-repeat: no-repeat;
   float: right;
   cursor: pointer;
   float: left; 
-  margin-top: 4px;
 }
 
 .modal-background {
@@ -700,7 +709,7 @@
   bottom: 0;
   left: 0; 
   background-color: rgba(000,000,000,0.6);
-  z-index: 9999999;
+  z-index: 9999999999;
 }
 
 .modal-box {
@@ -714,7 +723,7 @@
   bottom: 0;
   left: 0; 
   margin: auto;
-  z-index: 9999999;
+  z-index: 9999999999;
 }
 
 .modal-box-header {
@@ -765,4 +774,19 @@
   text-align: center;
   margin-top: 40px;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.24), 0px 0px 2px rgba(0, 0, 0, 0.12);
+}
+
+.save-recording-label {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.539261);
+}
+
+.save-recording {
+  width: 100%; 
+  background-color: transparent;
+  border: 0px solid transparent; 
+  border-bottom: 2px solid #009688; 
+  border-radius: 0;
+  outline: 0;
+  min-height: 50px;
 }

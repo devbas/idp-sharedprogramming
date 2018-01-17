@@ -9,9 +9,14 @@ const Modal = ({ props }) => (
 		{props.type === 'delete' &&
 		  <div className="modal-box-title">{props.title} {props.selectedItem.date}</div>
 		}
+
+		{props.type === 'save' &&
+		  <div className="modal-box-title">{props.title}</div>
+		}
 		
 	  </div>
 	  <div className="modal-box-content">
+		
 		{props.type === 'delete' &&
 		  <div className="left">
 
@@ -21,6 +26,16 @@ const Modal = ({ props }) => (
 			<div className="modal-box-cancel right" onClick={props.onCancel}>Cancel</div>
 		  </div>
 		}
+
+		{props.type === 'save' &&
+		  <div className="left full-width">
+		  
+		    <label className="save-recording-label">Description of content</label>
+			<textarea className="save-recording"></textarea>
+
+		  </div>
+		}
+
 	  </div>
 	</div>
   </div>

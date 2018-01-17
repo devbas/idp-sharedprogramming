@@ -12,7 +12,8 @@ class Toolbar extends Component {
       isStrokeActive: false, 
       isColorActive: false, 
       isRecording: false, 
-      isPaused: false
+      isPaused: false, 
+      isSaving: false
     }
 
     this.onRecordClick = this.onRecordClick.bind(this)
@@ -20,6 +21,7 @@ class Toolbar extends Component {
     this.onSaveClick = this.onSaveClick.bind(this)
     this.onStrokeClick = this.onStrokeClick.bind(this)
     this.onColorClick = this.onColorClick.bind(this)
+    this.onSaveCancel = this.onSaveCancel.bind(this)
   }
 
   onRecordClick() {
@@ -51,7 +53,15 @@ class Toolbar extends Component {
   }
 
   onSaveClick() {
+    this.setState({
+      isSaving: !this.state.isSaving
+    })
+  }
 
+  onSaveCancel() {
+    this.setState({
+      isSaving: !this.state.isSaving
+    })
   }
 
   onStrokeClick(value) {
@@ -75,6 +85,15 @@ class Toolbar extends Component {
   render() {
     return(
       <div>
+
+        {this.state.isSaving &&
+          <Modal
+            title='Save Session'
+            type='save'
+            onCancel={this.onSaveCancel}
+            onSubmit={this.onSaveSubmit}/>
+        }
+
         <ToolbarComponent 
           onRecordClick={this.onRecordClick}
           onPauseToggle={this.onPauseToggle}
