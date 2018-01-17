@@ -55,7 +55,6 @@ class Editor extends Component {
       console.log('updated editorValue: ', editorValue, this.editor.getSession().getLength())
 
       //if(editorValue.end.row > this.editor.getSession().getLength()) {
-      //  this.editor.getSession().getDocument().insertNewLine()
       //}
 
       let range = new Range({
@@ -71,28 +70,46 @@ class Editor extends Component {
 
       if(editorValue.action === 'insert') {
         let startLine = editorValue.start.row
-        console.log('startline start: ', startLine)
-        /*if(editorValue.lines.length > 1) {
-          editorValue.lines.forEach((line) => {
-            this.setState({ socketInserted: true })
-            startLine = startLine + 1; 
-            console.log('startLine: ', startLine)
-            this.editor.getSession().getDocument().insertNewLine({
+        let endRow = editorValue.end.row
+        let totalLines = this.editor.getSession().getLength()
+
+        if(editorValue.lines.length > 1) {
+
+          /*let delta = {
+            action: 'insertLines', 
+            range: {
               start: {
-                row: editorValue.start.row + startLine, 
+                row: editorValue.start.row, 
                 column: editorValue.start.column
+              }, 
+              end: {
+                row: editorValue.end.row, 
+                column: editorValue.end.column
               }
-            });
+            }, 
+            lines: editorValue.lines*/
+
+            console.log('startLine: ', startLine, '   editorValue line length: ', editorValue.lines.length, '   Total Length: ', startLine + editorValue.lines.length)
+
+            this.editor.getSession().getDocument().insert(startLine, editorValue.lines)
+            this.setState({ socketInserted: true })
+
+          //}
+
+          //console.log('lets apply deltas', delta);
+
+          //this.editor.getSession().getDocument().applyDeltas([delta]);*/
+
+          /*
 
             this.setState({ socketInserted: true })
             this.editor.getSession().getDocument().insert({ row: startLine, column: 0 }, line)        
-          })
-        } else {*/
-        this.setState({ socketInserted: true })
-        this.editor.getSession().getDocument().insert(editorValue.start, editorValue.lines[0])    
-        //}
+          })*/
+        } else {
+          this.setState({ socketInserted: true })
+          this.editor.getSession().getDocument().insert(editorValue.start, editorValue.lines[0])    
+        }
 
-        //this.editor.getSession().getDocument().insert(editorValue.start, editorValue.lines[0])        
       } else if(editorValue.action === 'remove') {
         console.log('editorValue: ', editorValue)
         
@@ -120,19 +137,20 @@ class Editor extends Component {
       tabSize: 2,
       showLineNumbers: true,
       maxLines: Infinity, 
-      minLines: 50
+      minLines: 500, 
+      enableBasicAutocompletion: false, 
+      enableLiveAutocompletion: false
     }) 
 
-    this.editor.session.replace({
+    /*this.editor.session.replace({
       start: {row: 0, column: 0},
       end: {row: 1000, column: Number.MAX_VALUE}
-    }, '')
+    }, '')*/
 
     this.editor.getSession().on('change', (e) => {
       let editorValue = this.editor.getValue();
 
       console.log('e: ', e, ' editorValue: ', editorValue)
-
       let cursor = this.editor.selection.getCursor();
 
       socket.emit('updateCursor', { cursorId: this.state.cursorId, position: { row: cursor.row, column: cursor.column } }) 
@@ -144,20 +162,20 @@ class Editor extends Component {
       }
     })
 
-    let hostname = 'http://' + window.location.hostname + ':8001';
+    let hostname = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':3000' : 'http://' + window.location.hostname + ':8001';
 
-    axios.get(hostname + '/src/assets/static/index.html')
+    axios.get(hostname + '/test/index.html')
     .then((result) => {
       this.setState({ indexHtml: result.data })
       console.log('html state: ', this.state.indexHtml)
     })
 
-    axios.get(hostname + '/src/assets/static/style.css')
+    axios.get(hostname + '/test/style.css')
     .then((result) => {
       this.setState({ styleScript: result.data })
     })
 
-    axios.get(hostname + '/src/assets/static/script.js')
+    axios.get(hostname + '/test/script.js')
     .then((result) => {
       this.setState({ jsScript: result.data })
     })

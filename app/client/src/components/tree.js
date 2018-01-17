@@ -45,7 +45,8 @@ const Tree = ({ in: inProp, renderItem, onTreeClose }) => (
   <div>
     <div className="tree-box animated slideInLeft">
       <div className="header">
-        <span onClick={onTreeClose}>close</span> Session List
+        <div onClick={onTreeClose} className="close-tree"></div>
+        <div className="left header-title">Session List</div>
       </div>
       <div className="content">
         {content.map(renderItem)}

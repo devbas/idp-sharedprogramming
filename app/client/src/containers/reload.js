@@ -10,7 +10,7 @@ class Reload extends Component {
 
   render() {
 
-    let url = 'http://' + window.location.hostname + ':8001' + '/src/assets/static/index.html';
+    let url = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':3000' + '/test/index.html' : 'http://' + window.location.hostname + ':8001' + '/test/index.html';
     console.log('url: ', url);
     return(
       <ReloadComponent url={url} />

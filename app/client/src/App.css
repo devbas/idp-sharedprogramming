@@ -421,6 +421,12 @@
   font-size: 36px;
   text-align: center;
   color: #9E9E9E;
+  float: left;
+  width: 100%; 
+}
+
+.tree-box .header .header-title {
+  margin-left: 27px;
 }
 
 .item-play {
@@ -582,4 +588,17 @@
 .stroke-menu .item.ultralarge {
   height: 30px;
   margin-bottom: 5px;
+}
+
+.close-tree {
+  background-image: url('./assets/images/ic_close_black.svg'); 
+  width: 40px;
+  height: 40px;
+  background-size: contain; 
+  background-repeat: no-repeat;
+  float: right;
+  margin-top: 1px;
+  margin-right: 27px;
+  opacity: 0.4;
+  cursor: pointer;
 }
