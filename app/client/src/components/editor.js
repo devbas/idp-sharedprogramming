@@ -45,7 +45,7 @@ const Editor = ({
 
     {showToolbar &&
       <div>
-        <Toolbar onEditClick={onToolbarEditClick}/>
+        <Toolbar onEditClick={onToolbarEditClick} onCloseClick={onToolbarToggleClick}/>
       </div>
     }
 

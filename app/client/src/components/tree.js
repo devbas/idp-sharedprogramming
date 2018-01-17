@@ -14,34 +14,9 @@ const transitionStyles = {
   entered:  { opacity: 1 },
 };
 
-const content = [
-  {
-    color: '#FFD700', 
-    date: '12/12/2017', 
-    duration: '28:38', 
-    description: 'Lorem ipsum dolor amet try-hard lomo yr la croix flannel, tattooed gentrify ramps shoreditch helvetica quinoa literally distillery austin sartorial. Bespoke venmo pitchfork cornhole street art hammock banjo lumbersexual church-key.'
-  }, 
-  {
-    color: '#2D9CDB', 
-    date: '07/12/2017', 
-    duration: '43:38', 
-    description: 'Lorem ipsum dolor amet try-hard lomo yr la croix flannel, tattooed gentrify ramps shoreditch helvetica quinoa literally distillery austin sartorial. Bespoke venmo pitchfork cornhole street art hammock banjo lumbersexual church-key.'
-  }, 
-  {
-    color: '#FF6666', 
-    date: '28/12/2017', 
-    duration: '15:38', 
-    description: 'Lorem ipsum dolor amet try-hard lomo yr la croix flannel, tattooed gentrify ramps shoreditch helvetica quinoa literally distillery austin sartorial. Bespoke venmo pitchfork cornhole street art hammock banjo lumbersexual church-key.'
-  },
-  {
-    color: '#6DC066', 
-    date: '14/11/2017', 
-    duration: '22:33', 
-    description: 'Lorem ipsum dolor amet try-hard lomo yr la croix flannel, tattooed gentrify ramps shoreditch helvetica quinoa literally distillery austin sartorial. Bespoke venmo pitchfork cornhole street art hammock banjo lumbersexual church-key.'
-  },
-]
+//const content = 
 
-const Tree = ({ in: inProp, renderItem, onTreeClose }) => (
+const Tree = ({ in: inProp, renderItem, onTreeClose, content, onItemDeleteClick }) => (
   <div>
     <div className="tree-box animated slideInLeft">
       <div className="header">
@@ -49,7 +24,29 @@ const Tree = ({ in: inProp, renderItem, onTreeClose }) => (
         <div className="left header-title">Session List</div>
       </div>
       <div className="content">
-        {content.map(renderItem)}
+        {content.map((item) => {
+          return (
+            <div className="tree-item-box">
+              <div className="left color-label" style={{backgroundColor: item.color}}>
+              </div>
+              <div className="left item-content-box">
+                <div className="left item-meta-content">
+                  <span className="item-date">{item.date}</span>
+                  <br/><br/>
+                  <span className="duration-label">Duration</span><br/>
+                  <span className="duration-value">{item.duration}</span>
+                </div>
+                <div className="left item-description">
+                  {item.description}
+                </div>
+                <div className="left item-play">
+                </div>
+                <div className="left item-delete" onClick={() => onItemDeleteClick(item.key)}>
+                </div>
+              </div>
+            </div>
+          )
+        })}
       </div>
     </div>
   </div>

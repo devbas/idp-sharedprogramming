@@ -10,7 +10,8 @@ import Editor from './containers/editor';
 import Toolbar from './containers/toolbar';
 import Canvas from './containers/canvas';
 import Tree from './containers/tree';
-import Reload from './containers/reload';     
+import Reload from './containers/reload';  
+import Paint from './containers/paint';   
 
 class App extends Component {
   render() {
@@ -21,7 +22,7 @@ class App extends Component {
           <Route exact path="/" component={Editor}/>
           <AnimatedRoute 
             exact path="/canvas" 
-            component={Canvas}
+            component={Paint}
             atEnter={{ offset: -100 }}
             atLeave={{ offset: -100 }}
             atActive={{ offset: 0 }}

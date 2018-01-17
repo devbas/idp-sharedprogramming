@@ -6,6 +6,12 @@ class Reload extends Component {
 
   constructor(props) {
     super(props); 
+
+    this.onEditorToggleClick = this.onEditorToggleClick.bind(this)
+  }
+
+  onEditorToggleClick() {
+    
   }
 
   render() {
@@ -13,7 +19,7 @@ class Reload extends Component {
     let url = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':3000' + '/test/index.html' : 'http://' + window.location.hostname + ':8001' + '/test/index.html';
     console.log('url: ', url);
     return(
-      <ReloadComponent url={url} />
+      <ReloadComponent url={url} onEditorToggleClick={this.onEditorToggleClick} />
     )
   }
 

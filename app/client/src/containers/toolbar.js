@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ToolbarComponent from '../components/toolbar';
+import Modal from './modal';
 
 class Toolbar extends Component {
 
@@ -10,11 +11,12 @@ class Toolbar extends Component {
       strokeWidth: 1, 
       isStrokeActive: false, 
       isColorActive: false, 
-      isRecording: false
+      isRecording: false, 
+      isPaused: false
     }
 
     this.onRecordClick = this.onRecordClick.bind(this)
-    this.onPauseClick = this.onPauseClick.bind(this)
+    this.onPauseToggle = this.onPauseToggle.bind(this)
     this.onSaveClick = this.onSaveClick.bind(this)
     this.onStrokeClick = this.onStrokeClick.bind(this)
     this.onColorClick = this.onColorClick.bind(this)
@@ -22,16 +24,30 @@ class Toolbar extends Component {
 
   onRecordClick() {
     console.log('on record click');
-    this.setState({
-      isRecording: !this.state.isRecording
-    })
+    
+    if(!this.state.isRecording) {
+      this.setState({
+        isRecording: !this.state.isRecording, 
+        isPaused: false
+      })
+    } else {
+      this.setState({
+        isRecording: !this.state.isRecording, 
+        isPaused: true
+      })
+    }
+
+    
     // Change record icon to recordING icon
 
     // Make toolbar smaller
   }
 
-  onPauseClick() {
-
+  onPauseToggle() {
+    this.setState({
+      isRecording: !this.state.isRecording, 
+      isPaused: !this.state.isPaused
+    })
   }
 
   onSaveClick() {
@@ -58,17 +74,21 @@ class Toolbar extends Component {
 
   render() {
     return(
-      <ToolbarComponent 
-        onRecordClick={this.onRecordClick}
-        onPauseClick={this.onPauseClick}
-        onSaveClick={this.onSaveClick}
-        onEditClick={this.props.onEditClick}
-        onStrokeClick={this.onStrokeClick}
-        onColorClick={this.onColorClick}
-        isStrokeActive={this.state.isStrokeActive}
-        isColorActive={this.state.isColorActive}
-        isRecording={this.state.isRecording}
-      />
+      <div>
+        <ToolbarComponent 
+          onRecordClick={this.onRecordClick}
+          onPauseToggle={this.onPauseToggle}
+          onSaveClick={this.onSaveClick}
+          onEditClick={this.props.onEditClick}
+          onStrokeClick={this.onStrokeClick}
+          onColorClick={this.onColorClick}
+          isStrokeActive={this.state.isStrokeActive}
+          isColorActive={this.state.isColorActive}
+          isRecording={this.state.isRecording}
+          onCloseClick={this.props.onCloseClick}
+          isPaused={this.state.isPaused}
+        />
+      </div>
     )
   }
 

@@ -44,18 +44,11 @@ class Editor extends Component {
     this.onToolbarToggleClick = this.onToolbarToggleClick.bind(this)
     this.loadInEditor = this.loadInEditor.bind(this)
     this.onToolbarEditClick = this.onToolbarEditClick.bind(this)
-    //this.onPreviewClick = this.onPreviewClick.bind(this)
 
     this.subscribeToEditorValue((err, editorValue) => {
       this.setState({ 
         lastUpdate: editorValue
       });
-
-
-      console.log('updated editorValue: ', editorValue, this.editor.getSession().getLength())
-
-      //if(editorValue.end.row > this.editor.getSession().getLength()) {
-      //}
 
       let range = new Range({
         start: {
@@ -137,15 +130,10 @@ class Editor extends Component {
       tabSize: 2,
       showLineNumbers: true,
       maxLines: Infinity, 
-      minLines: 500, 
+      minLines: 50, 
       enableBasicAutocompletion: false, 
       enableLiveAutocompletion: false
     }) 
-
-    /*this.editor.session.replace({
-      start: {row: 0, column: 0},
-      end: {row: 1000, column: Number.MAX_VALUE}
-    }, '')*/
 
     this.editor.getSession().on('change', (e) => {
       let editorValue = this.editor.getValue();
@@ -167,7 +155,6 @@ class Editor extends Component {
     axios.get(hostname + '/test/index.html')
     .then((result) => {
       this.setState({ indexHtml: result.data })
-      console.log('html state: ', this.state.indexHtml)
     })
 
     axios.get(hostname + '/test/style.css')

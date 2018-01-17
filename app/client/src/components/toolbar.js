@@ -3,7 +3,7 @@ import React from 'react';
 const Toolbar = ({ 
   colorMenuActive,
   onRecordClick, 
-  onPauseClick, 
+  onPauseToggle, 
   onSaveClick,
   onEditClick, 
   onStrokeClick, 
@@ -13,9 +13,11 @@ const Toolbar = ({
   isStrokeActive, 
   isColorActive, 
   strokeValue, 
-  isRecording }) => (
+  isRecording, 
+  onCloseClick, 
+  isPaused }) => (
   <div className="toolbar">
-    <div className="toolbar-box">
+    <div className="toolbar-box animated slideInDown">
 
       {isRecording &&
         <div className="left recording-icon" onClick={onRecordClick}></div>
@@ -24,9 +26,26 @@ const Toolbar = ({
       {!isRecording &&
         <div className="left record-icon" onClick={onRecordClick}></div>
       }
+
+      {isPaused &&
+        <div className="left play-icon" onClick={onPauseToggle}></div>    
+      }
       
-      <div className="left pause-icon" onClick={onPauseClick}></div>
-      <div className="left save-icon" onClick={onSaveClick}></div>
+      {!isPaused && isRecording &&
+        <div className="left pause-icon" onClick={onPauseToggle}></div>      
+      }
+
+      {!isPaused && !isRecording &&
+        <div className="left pause-icon inactive-icon" onClick={onPauseToggle}></div>      
+      }
+
+      {isPaused &&
+        <div className="left save-icon" onClick={onSaveClick}></div>
+      }
+
+      {!isPaused &&
+        <div className="left save-icon inactive-icon" onClick={onSaveClick}></div>
+      }
 
       <div className="left toolbar-divider"></div>
 
@@ -53,11 +72,13 @@ const Toolbar = ({
 
       <div className="left toolbar-divider"></div>
 
-      <div className="left settings-icon" onClick={onSettingsClick}></div> 
-      <div className="left help-icon" onClick={onHelpClick}></div> 
+      <div className="left close-icon" onClick={onCloseClick}></div> 
 
     </div>
   </div>
 )
+
+//      <div className="left settings-icon" onClick={onSettingsClick}></div> 
+//<div className="left help-icon" onClick={onHelpClick}></div> 
 
 export default Toolbar;
