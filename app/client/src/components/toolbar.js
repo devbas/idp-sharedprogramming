@@ -66,7 +66,14 @@ const Toolbar = ({
         <div className="color-icon" onClick={onColorClick}></div> 
         {isColorActive &&
           <div className="color-menu" onClick={onColorClick}>
-            <p>Color menu;-)</p>
+            <div className="item left background-grey"></div>
+            <div className="item left background-red"></div>
+            <div className="item left background-orange"></div>
+            <div className="item left background-green"></div>
+            <div className="item left background-blue"></div>
+            <div className="item left background-darkgray"></div>
+            <div className="item left background-purple"></div>
+            <div className="item left background-white"></div>
           </div>
         }
       </div>

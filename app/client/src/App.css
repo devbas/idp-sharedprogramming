@@ -670,6 +670,86 @@
   margin-bottom: 5px;
 }
 
+.color-menu {
+  position: absolute; 
+  bottom: -153px; 
+  left: 457px;
+  height: 137px;
+  width: 309px;
+  background-color: #fff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.24), 0px 0px 4px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+}
+
+.color-menu::before {
+  content: "";
+  position: absolute; 
+  border-bottom: 10px solid #fff;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  top: -10px;
+  left: calc(50% - 10px)
+}
+
+.color-menu .item {
+  width: 37px;
+  height: 37px;
+  border-radius: 30px;
+  margin-left: 25px;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: border 0.1s ease-in-out;
+}
+
+.background-grey {
+  background-color: #C4C4C4;
+  border: 6px solid #C4C4C4 
+}
+
+.background-red {
+  background-color: #D14F4F;
+  border: 6px solid #D14F4F
+}
+
+.background-orange {
+  background-color: #F2994A;
+  border: 6px solid #F2994A;
+}
+
+.background-green {
+  background-color: #27AE60;
+  border: 6px solid #27AE60
+}
+
+.background-blue {
+  background-color: #56CCF2;
+  border: 6px solid #56ccf2;
+}
+
+.background-darkgray {
+  background-color: #333333;
+  border: 6px solid #333333;
+}
+
+.background-purple {
+  background-color: #BB6BD9;
+  border: 6px solid #BB6BD9
+}
+
+.background-white {
+  background-color: #fff; 
+  border: 6px solid #C4C4C4
+}
+
+.color-menu .item:hover {
+  border: 6px solid rgba(000, 000, 000, 0.4);
+  transition: border 0.1s ease-in-out;
+}
+
+
+
+
+
 .close-tree {
   background-image: url('./assets/images/ic_close_black.svg'); 
   width: 40px;

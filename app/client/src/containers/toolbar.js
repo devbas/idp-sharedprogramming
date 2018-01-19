@@ -16,12 +16,15 @@ class Toolbar extends Component {
       isSaving: false
     }
 
+    console.log('props: ', this.props)
+
     this.onRecordClick = this.onRecordClick.bind(this)
     this.onPauseToggle = this.onPauseToggle.bind(this)
     this.onSaveClick = this.onSaveClick.bind(this)
     this.onStrokeClick = this.onStrokeClick.bind(this)
     this.onColorClick = this.onColorClick.bind(this)
     this.onSaveCancel = this.onSaveCancel.bind(this)
+    this.onEditClick = this.onEditClick.bind(this)
   }
 
   onRecordClick() {
@@ -43,6 +46,11 @@ class Toolbar extends Component {
     // Change record icon to recordING icon
 
     // Make toolbar smaller
+  }
+
+  onEditClick() {
+    console.log('ooon edit click')
+    this.props.onToolbarEditClick()
   }
 
   onPauseToggle() {
@@ -98,7 +106,7 @@ class Toolbar extends Component {
           onRecordClick={this.onRecordClick}
           onPauseToggle={this.onPauseToggle}
           onSaveClick={this.onSaveClick}
-          onEditClick={this.props.onEditClick}
+          onEditClick={this.onEditClick}
           onStrokeClick={this.onStrokeClick}
           onColorClick={this.onColorClick}
           isStrokeActive={this.state.isStrokeActive}
