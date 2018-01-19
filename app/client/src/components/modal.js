@@ -33,6 +33,8 @@ const Modal = ({ props }) => (
 		    <label className="save-recording-label">Description of content</label>
 			<textarea className="save-recording"></textarea>
 
+			<div className="modal-box-save right" onClick={props.onSubmit}>Save</div>
+			<div className="modal-box-cancel right" onClick={props.onCancel}>Cancel</div>
 		  </div>
 		}
 

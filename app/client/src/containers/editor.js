@@ -61,7 +61,7 @@ class Editor extends Component {
         }
       })
 
-      if(editorValue.action === 'insert') {
+      if(editorValue.action === 'insert' && !this.state.socketInserted) {
         let startLine = editorValue.start.row
         let endRow = editorValue.end.row
         let totalLines = this.editor.getSession().getLength()
@@ -82,10 +82,11 @@ class Editor extends Component {
             }, 
             lines: editorValue.lines*/
 
-            console.log('startLine: ', startLine, '   editorValue line length: ', editorValue.lines.length, '   Total Length: ', startLine + editorValue.lines.length)
+            console.log('startLine: ', startLine, '   editorValue: ', editorValue.lines.join('\n'), '   Total Length: ', startLine + editorValue.lines.length)
 
-            this.editor.getSession().getDocument().insert(startLine, editorValue.lines)
             this.setState({ socketInserted: true })
+            this.editor.getSession().getDocument().insert(startLine, editorValue.lines.join('\n'))
+            
 
           //}
 
@@ -103,7 +104,7 @@ class Editor extends Component {
           this.editor.getSession().getDocument().insert(editorValue.start, editorValue.lines[0])    
         }
 
-      } else if(editorValue.action === 'remove') {
+      } else if(editorValue.action === 'remove' && !this.state.socketInserted) {
         console.log('editorValue: ', editorValue)
         
         console.log('range: ', range)
@@ -119,6 +120,9 @@ class Editor extends Component {
 
     socket.on('assignedCursorId', cursorId => this.setState({ cursorId: cursorId }))
     socket.on('cursorUpdate', cursor => this.updateEditorCursor(cursor))
+    socket.on('openFile', (key) => {
+      this.setState({ currentFileOpen: key })  
+    })
   }
   
   componentDidMount() {
@@ -138,11 +142,15 @@ class Editor extends Component {
     this.editor.getSession().on('change', (e) => {
       let editorValue = this.editor.getValue();
 
-      console.log('e: ', e, ' editorValue: ', editorValue)
+      console.log('triggered change')
       let cursor = this.editor.selection.getCursor();
 
       socket.emit('updateCursor', { cursorId: this.state.cursorId, position: { row: cursor.row, column: cursor.column } }) 
       
+      if(this.state.currentFileOpen === 'index') this.setState({ indexHtml: editorValue })
+      if(this.state.currentFileOpen === 'style') this.setState({ styleScript: editorValue })
+      if(this.state.currentFileOpen === 'script') this.setState({ jsScript: editorValue })
+
       if(!this.state.socketInserted) {
         socket.emit('subscribeToEditor', e);
       } else {
@@ -170,6 +178,16 @@ class Editor extends Component {
     this.loadInEditor('index.html')
   }
 
+  componentWillUnmount() {
+    
+    let host = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':8001' : 'http://' + window.location.hostname + ':8001';
+    
+    axios.post(`${host}/api/code/save`, {
+      html: this.state.indexHtml, 
+      style: this.state.styleScript, 
+      script: this.state.jsScript
+    })
+  }
 
   updateEditorCursor(cursor) {
     
@@ -287,6 +305,9 @@ class Editor extends Component {
   }
 
   loadInEditor(key) {
+
+    socket.emit('openFile', key)
+
     if(key === 'index.html') {
       console.log('load it!');
       this.setState({

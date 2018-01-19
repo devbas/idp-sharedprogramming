@@ -29,7 +29,7 @@ const Editor = ({
       <div className="arrow arrow-right"></div>
     </Link>
 
-    <Link to="/reload" indexHtml={indexHtml} styleScript={styleScript} jsScript={jsScript}>
+    <Link to="/reload">
       <div className="arrow arrow-bottom"></div>
     </Link>
    

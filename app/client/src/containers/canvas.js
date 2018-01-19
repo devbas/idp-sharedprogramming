@@ -4,6 +4,9 @@ import {
 	Link
 } from 'react-router-dom'; 
 import Toolbar from './toolbar';
+import * as PaintActions from '../actions/paint'; 
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux'; 
 const { List, Map } = require('immutable');
 
 function DrawingLine({ line, stroke, color }) {
@@ -74,9 +77,10 @@ class Canvas extends Component {
 
     const point = this.relativeCoordinatesForEvent(mouseEvent);
     
-    this.setState(prevState =>  ({
+    this.props.actions.parseLayers(point, 'editor')
+    /*this.setState(prevState =>  ({
       lines: prevState.lines.updateIn([prevState.lines.size - 1], line => line.push(point))
-    }));
+    }));*/
   }
 
   handleMouseUp() {
@@ -111,12 +115,23 @@ class Canvas extends Component {
           onMouseDown={this.handleMouseDown}
           onMouseMove={this.handleMouseMove}
         >
-          <Drawing lines={this.state.lines} stroke={this.state.stroke} color={this.state.color}/>
+          <Drawing lines={this.props.parsedLayers} stroke={this.state.stroke} color={this.state.color}/>
         </div>
       </div>
     );
   }
-
 }
 
-export default Canvas;
+function mapStateToProps(state) {
+	return { 
+		parsedLayers: state.parsedLayers
+	}
+} 
+
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: bindActionCreators(PaintActions, dispatch)
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Canvas); 

@@ -78,6 +78,10 @@ io.on('connection', (client) => {
     console.log('update following cursor: ', cursor)
     client.broadcast.emit('cursorUpdate', { cursorId: cursor.cursorId, position: cursor.position })
   })
+
+  client.on('openFile', (key) => {
+    client.broadcast.emit('openFile', key)
+  })
   
 });
 
