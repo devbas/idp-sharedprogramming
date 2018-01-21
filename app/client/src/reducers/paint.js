@@ -20,7 +20,6 @@ export const activeDrawingWidth = createReducer(3, {
 
 export const isDrawingActive = createReducer(false, {
   [types.TOGGLE_DRAWING](state, action) {
-    console.log('reduceerrrr');
     let newState = !action.isDrawingActive
 
     return newState

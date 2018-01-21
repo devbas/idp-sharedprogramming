@@ -13,15 +13,21 @@ installDevTools(Immutable);
 
 function DrawingLine({ line, stroke, color }) {
 
-  let drawingLine = line.get('line')
+  let location = line.get('location')
+  
+  if(location === window.location.href) {
+    let drawingLine = line.get('line')
 
-  const pathData = "M " +
-    drawingLine
-      .map(p => p.get('x') + ' ' + p.get('y'))
-      .join(" L "); 
-    
-  const colorFormatted = '#' + line.get('color')
-  return <path className="path" d={pathData} stroke-width={line.get('width')} stroke={colorFormatted} />;
+    const pathData = "M " +
+      drawingLine
+        .map(p => p.get('x') + ' ' + p.get('y'))
+        .join(" L "); 
+      
+    const colorFormatted = '#' + line.get('color')
+    return <path className="path" d={pathData} stroke-width={line.get('width')} stroke={colorFormatted} />;
+  } else {
+    return null
+  }
 }
 
 function Drawing({ lines, stroke, color }) {
@@ -76,7 +82,8 @@ class Canvas extends Component {
     let newLine = Immutable.Map({
       line: Immutable.List([point]), 
       width: this.props.activeDrawingWidth,
-      color: this.props.activeDrawingColor
+      color: this.props.activeDrawingColor, 
+      location: window.location.href
     })
 
     this.props.actions.boundSetLines(this.props.lines.push(newLine), this.props.activeDrawingWidth);
