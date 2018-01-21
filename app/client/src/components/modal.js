@@ -3,7 +3,7 @@ import React from 'react';
 const Modal = ({ props }) => (
   <div>
     <div className="modal-background" onClick={props.onCancel}></div>
-	<div className="modal-box">
+	<div className="modal-box" id={props.type === 'save' ? 'modal-box-save' : 'modal-box-delete'}>
 	  <div className="modal-box-header">
 
 		{props.type === 'delete' &&

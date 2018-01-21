@@ -17,12 +17,21 @@ const Editor = ({
   styleScript,
   jsScript, 
   onToolbarEditClick, 
-  canvasActive
+  canvasActive, 
+  isRecording
  }) => (
   <div className="editor">
 
-    {!showToolbar &&
+    {!showToolbar && !isRecording &&
       <div className="arrow arrow-top" onClick={onToolbarToggleClick}></div>
+    }
+
+    {!showToolbar && isRecording &&
+      <div className="toolbar-tooltip" onClick={onToolbarToggleClick}>
+        <div className="label">recording</div>
+        <div className="recording"></div>
+        <div className="arrow"></div>
+      </div>
     }
     
     <Link to="/canvas">

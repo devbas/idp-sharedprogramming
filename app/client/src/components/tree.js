@@ -16,7 +16,7 @@ const transitionStyles = {
 
 //const content = 
 
-const Tree = ({ in: inProp, renderItem, onTreeClose, content, onItemDeleteClick }) => (
+const Tree = ({ in: inProp, renderItem, onTreeClose, content, onItemDeleteClick, onItemPlayClick }) => (
   <div>
     <div className="tree-box animated slideInLeft">
       <div className="header">
@@ -39,7 +39,7 @@ const Tree = ({ in: inProp, renderItem, onTreeClose, content, onItemDeleteClick 
                 <div className="left item-description">
                   {item.description}
                 </div>
-                <div className="left item-play">
+                <div className="left item-play" onClick={() => onItemPlayClick(item.key)}>
                 </div>
                 <div className="left item-delete" onClick={() => onItemDeleteClick(item.key)}>
                 </div>

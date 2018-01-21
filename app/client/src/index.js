@@ -9,5 +9,16 @@ import { persistStore } from 'redux-persist';
 import configureStore from './store/configureStore'; 
 let store = configureStore({});
 
-ReactDOM.render(<App />, document.getElementById('root'));
+new Promise((resolve, reject) => {
+  persistStore(store, {}, () => {
+    console.log('store persisted');
+	resolve();
+  }).purge()
+}).then(() => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>, document.getElementById('root'));
+})
+
 registerServiceWorker();

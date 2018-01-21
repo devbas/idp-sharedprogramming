@@ -7,15 +7,21 @@ import Toolbar from './toolbar';
 import * as PaintActions from '../actions/paint'; 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'; 
-const { List, Map } = require('immutable');
+var Immutable = require("immutable");
+var installDevTools = require("immutable-devtools");
+installDevTools(Immutable);
 
 function DrawingLine({ line, stroke, color }) {
+
+  let drawingLine = line.get('line')
+
   const pathData = "M " +
-    line
+    drawingLine
       .map(p => p.get('x') + ' ' + p.get('y'))
-      .join(" L ");
+      .join(" L "); 
     
-    return <path className="path" d={pathData} stroke-width={stroke} stroke={color} />;
+  const colorFormatted = '#' + line.get('color')
+  return <path className="path" d={pathData} stroke-width={line.get('width')} stroke={colorFormatted} />;
 }
 
 function Drawing({ lines, stroke, color }) {
@@ -34,7 +40,7 @@ class Canvas extends Component {
     super();
 
     this.state = {
-      lines: new List(),
+      lines: Immutable.List(),
       isDrawing: false, 
       color: false, 
       stroke: 30, 
@@ -44,7 +50,6 @@ class Canvas extends Component {
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
-    //this.relativeCoordinatesForEvent = this.relativeCoordinatesForEvent.bind(this);
     this.onToolbarClick = this.onToolbarClick.bind(this);
     this.onStrokeUpdate = this.onStrokeUpdate.bind(this); 
   }
@@ -63,11 +68,18 @@ class Canvas extends Component {
     }
 
     const point = this.relativeCoordinatesForEvent(mouseEvent);
-
     this.setState(prevState => ({
-      lines: prevState.lines.push(new List([point])),
+      lines: prevState.lines.push(Immutable.List([point])),
       isDrawing: true
     }));
+
+    let newLine = Immutable.Map({
+      line: Immutable.List([point]), 
+      width: this.props.activeDrawingWidth,
+      color: this.props.activeDrawingColor
+    })
+
+    this.props.actions.boundSetLines(this.props.lines.push(newLine), this.props.activeDrawingWidth);
   }
 
   handleMouseMove(mouseEvent) {
@@ -75,12 +87,14 @@ class Canvas extends Component {
       return;
     }
 
-    const point = this.relativeCoordinatesForEvent(mouseEvent);
+    const point = this.relativeCoordinatesForEvent(mouseEvent)
     
-    this.props.actions.parseLayers(point, 'editor')
-    /*this.setState(prevState =>  ({
+    this.setState(prevState =>  ({
       lines: prevState.lines.updateIn([prevState.lines.size - 1], line => line.push(point))
-    }));*/
+    }));
+
+    this.props.actions.boundSetLines(this.props.lines.updateIn([this.props.lines.size - 1, 'line'], line => line.push(point)));
+
   }
 
   handleMouseUp() {
@@ -89,10 +103,9 @@ class Canvas extends Component {
 
   relativeCoordinatesForEvent(mouseEvent) {
     const boundingRect = this.refs.drawArea.getBoundingClientRect();
-    return new Map({
+    return Immutable.Map({
       x: mouseEvent.clientX - boundingRect.left,
       y: mouseEvent.clientY - boundingRect.top
-      // style: current style
     });
   }
 
@@ -115,7 +128,7 @@ class Canvas extends Component {
           onMouseDown={this.handleMouseDown}
           onMouseMove={this.handleMouseMove}
         >
-          <Drawing lines={this.props.parsedLayers} stroke={this.state.stroke} color={this.state.color}/>
+          <Drawing lines={this.props.lines} stroke={this.props.activeDrawingWidth} color={this.props.activeDrawingColor}/>
         </div>
       </div>
     );
@@ -124,7 +137,10 @@ class Canvas extends Component {
 
 function mapStateToProps(state) {
 	return { 
-		parsedLayers: state.parsedLayers
+    parsedLayers: state.parsedLayers, 
+    activeDrawingColor: state.activeDrawingColor, 
+    activeDrawingWidth: state.activeDrawingWidth, 
+    lines: state.drawingLines
 	}
 } 
 

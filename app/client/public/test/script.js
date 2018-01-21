@@ -1,47 +1,5 @@
-var myNodelist = document.getElementsByTagName('LI');
-var i;
-for (i = 0; i < myNodelist.length; i++) {
-    var span = document.createElement('SPAN');
-    var txt = document.createTextNode('×');
-    span.className = 'close';
-    span.appendChild(txt);
-    myNodelist[i].appendChild(span)
-}
-var close = document.getElementsByClassName('close');
-var i;
-for (i = 0; i < close.length; i++) {
-    close[i].onclick = function() {
-        var div = this.parentElement;
-        div.style.display = 'none'
-    }
-}
-var list = document.querySelector('ul');
-list.addEventListener('click', function(ev) {
-    if (ev.target.tagName === 'LI') {
-        ev.target.classList.toggle('checked')
-    }
-}, !1);
-
-function newElement() {
-    var li = document.createElement('li');
-    var inputValue = document.getElementById('myInput').value;
-    var t = document.createTextNode(inputValue);
-    li.appendChild(t);
-    if (inputValue === '') {
-        alert('You must write something!')
-    } else {
-        document.getElementById('myUL').appendChild(li)
-    }
-    document.getElementById('myInput').value = '';
-    var span = document.createElement('SPAN');
-    var txt = document.createTextNode('×');
-    span.className = 'close';
-    span.appendChild(txt);
-    li.appendChild(span);
-    for (i = 0; i < close.length; i++) {
-        close[i].onclick = function() {
-            var div = this.parentElement;
-            div.style.display = 'none'
-        }
-    }
-}
+.addBtn, .header { text-align: center } .addBtn, ul li { cursor: pointer } * { box-sizing: border-box } ul { margin: 0; padding: 0 } ul li { position: relative; padding: 12px 8px 12px 40px; background: #eee; font-size: 18px; transition: .2s; -webkit-user-select:
+none; -moz-user-select: none; -ms-user-select: none; user-select: none } ul li:nth-child(odd) { background: #f9f9f9 } ul li:hover { background: #ddd } ul li.checked { background: #888; color: #fff; text-decoration: line-through } .close:hover, .header
+{ background-color: #f44336; color: #fff } ul li.checked::before { content: ''; position: absolute; border-color: #fff; border-style: solid; border-width: 0 2px 2px 0; top: 10px; left: 16px; transform: rotate(45deg); height: 15px; width: 7px } .close
+{ position: absolute; right: 0; top: 0; padding: 12px 16px } .header { padding: 30px 40px } .addBtn, input { padding: 10px; float: left; font-size: 16px } .header:after { content: ''; display: table; clear: both } input { border: none; width: 75% } .addBtn
+{ width: 25%; background: #d9d9d9; color: #555; transition: .3s } .addBtn:hover { background-color: #bbb }

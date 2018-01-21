@@ -40,12 +40,25 @@ class Tree extends Component {
           description: 'Lorem ipsum dolor amet try-hard lomo yr la croix flannel, tattooed gentrify ramps shoreditch helvetica quinoa literally distillery austin sartorial. Bespoke venmo pitchfork cornhole street art hammock banjo lumbersexual church-key.'
         },
       ], 
-      selectedItem: {}
+      selectedItem: {}, 
+      itemPlaying: false
     }
 
     this.onItemDeleteClick = this.onItemDeleteClick.bind(this);
     this.modalOnCancel = this.modalOnCancel.bind(this);
     this.modalOnSubmit = this.modalOnSubmit.bind(this);
+    this.onItemPlayClick = this.onItemPlayClick.bind(this);
+
+  }
+
+  componentDidMount() {
+    let self = this;
+    document.onkeydown = function(evt) {
+      evt = evt || window.event;
+      if (evt.keyCode == 27) {
+       self.setState({ itemPlaying: false })
+      }
+    };
   }
 
   onItemDeleteClick(key) {
@@ -56,6 +69,13 @@ class Tree extends Component {
     this.setState({
       deleteModalIsOpen: !this.state.deleteModalIsOpen, 
       selectedItem: selectedItem
+    })
+  }
+
+  onItemPlayClick(key) {
+    console.log('lets play the thing');
+    this.setState({
+      itemPlaying: true 
     })
   }
 
@@ -75,6 +95,14 @@ class Tree extends Component {
   render() {
     return(
       <div>
+
+        {this.state.itemPlaying &&
+          <div className="movie-fullscreen">
+            <iframe src="https://player.vimeo.com/video/239532213" style={{height: '100vh', width: '100%'}}>
+            </iframe>
+          </div>
+        }
+
         {this.state.deleteModalIsOpen &&
           <Modal 
             title='Delete Session'
@@ -89,6 +117,7 @@ class Tree extends Component {
           in={this.props.in} 
           onTreeClose={this.props.onTreeClose}
           onItemDeleteClick={this.onItemDeleteClick}
+          onItemPlayClick={this.onItemPlayClick}
           content={this.state.content}
         />
       </div>

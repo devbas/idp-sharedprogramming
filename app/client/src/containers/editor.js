@@ -6,13 +6,12 @@ import 'brace/theme/monokai';
 import jsBeautify from 'js-beautify';
 import { html as htmlBeautify, css as cssBeautify } from 'js-beautify';
 import openSocket from 'socket.io-client';
-import CustomCursor from '../components/customCursor'
 import _ from 'lodash'
 import async from 'async'
 import axios from 'axios';
-import {
-	Link
-} from 'react-router-dom'; 
+import * as PaintActions from '../actions/paint'; 
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux'; 
 import exampleData from '../assets/example-data.json'
 
 const socket = openSocket(window.location.hostname === 'localhost' ? 'http://localhost:8002': 'http:' + window.location.hostname + ':8002');
@@ -35,15 +34,13 @@ class Editor extends Component {
       styleScript: false,
       jsScript: false, 
       svgLogo: exampleData.svg,
-      currentFileOpen: 'index', 
-      canvasActive: false
+      currentFileOpen: 'index'
     }
 
     this.updateEditorCursor = this.updateEditorCursor.bind(this)
     this.onTreeToggleClick = this.onTreeToggleClick.bind(this)
     this.onToolbarToggleClick = this.onToolbarToggleClick.bind(this)
     this.loadInEditor = this.loadInEditor.bind(this)
-    this.onToolbarEditClick = this.onToolbarEditClick.bind(this)
 
     this.subscribeToEditorValue((err, editorValue) => {
       this.setState({ 
@@ -63,8 +60,6 @@ class Editor extends Component {
 
       if(editorValue.action === 'insert' && !this.state.socketInserted) {
         let startLine = editorValue.start.row
-        let endRow = editorValue.end.row
-        let totalLines = this.editor.getSession().getLength()
 
         if(editorValue.lines.length > 1) {
 
@@ -209,7 +204,6 @@ class Editor extends Component {
       
       this.setState({ markers: stateMarkers })
 
-      let self = this;
       let marker = {};
       marker.cursors = this.state.markers;
       marker.update = function(html, markerLayer, session, config) {
@@ -365,14 +359,6 @@ class Editor extends Component {
     }
   }
 
-  onToolbarEditClick() {
-    // Render canvas
-    console.log('toolbar edit click')
-    this.setState({
-      canvasActive: !this.state.canvasActive
-    })
-  }
-
   render() {
     console.log('rerender');
     return(
@@ -387,12 +373,25 @@ class Editor extends Component {
           indexHtml={this.state.indexHtml} 
           styleScript={this.state.styleScript}
           jsScript={this.state.jsScript}
-          onToolbarEditClick={this.onToolbarEditClick}
-          canvasActive={this.state.canvasActive} />
+          canvasActive={this.props.isDrawingActive}
+          isRecording={this.props.isRecordingActive}/>
       </div>
     )
   }
 
 }
 
-export default Editor;
+function mapStateToProps(state) {
+	return { 
+    isDrawingActive: state.isDrawingActive, 
+    isRecordingActive: state.isRecordingActive
+	}
+} 
+
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: bindActionCreators(PaintActions, dispatch)
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Editor); 

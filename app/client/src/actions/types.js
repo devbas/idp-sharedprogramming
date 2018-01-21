@@ -1,1 +1,8 @@
 export const SET_LAYERS = 'SET_LAYERS';
+export const SET_ACTIVE_COLOR = 'SET_ACTIVE_COLOR';
+export const SET_ACTIVE_WIDTH = 'SET_ACTIVE_WIDTH';
+export const TOGGLE_DRAWING = 'TOGGLE_DRAWING';
+export const SET_LINES = 'SET_LINES';
+
+export const TOGGLE_RECORDING = 'TOGGLE_RECORDING';
+export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';

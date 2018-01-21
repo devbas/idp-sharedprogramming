@@ -15,10 +15,11 @@ const Toolbar = ({
   strokeValue, 
   isRecording, 
   onCloseClick, 
-  isPaused
+  isPaused, 
+  onMouseLeave
 }) => (
   <div className="toolbar">
-    <div className="toolbar-box animated slideInDown">
+    <div className="toolbar-box animated slideInDown" onMouseLeave={onMouseLeave}>
 
       {isRecording &&
         <div className="left recording-icon" onClick={onRecordClick}></div>
@@ -65,15 +66,15 @@ const Toolbar = ({
       <div className="left color-menu-box">
         <div className="color-icon" onClick={onColorClick}></div> 
         {isColorActive &&
-          <div className="color-menu" onClick={onColorClick}>
-            <div className="item left background-grey"></div>
-            <div className="item left background-red"></div>
-            <div className="item left background-orange"></div>
-            <div className="item left background-green"></div>
-            <div className="item left background-blue"></div>
-            <div className="item left background-darkgray"></div>
-            <div className="item left background-purple"></div>
-            <div className="item left background-white"></div>
+          <div className="color-menu">
+            <div className="item left background-grey" onClick={() => onColorClick('C4C4C4')}></div>
+            <div className="item left background-red" onClick={() => onColorClick('D14F4F')}></div>
+            <div className="item left background-orange" onClick={() => onColorClick('F2994A')}></div>
+            <div className="item left background-green" onClick={() => onColorClick('27AE60')}></div>
+            <div className="item left background-blue" onClick={() => onColorClick('56CCF2')}></div>
+            <div className="item left background-darkgray" onClick={() => onColorClick('333333')}></div>
+            <div className="item left background-purple" onClick={() => onColorClick('BB6BD9')}></div>
+            <div className="item left background-white" onClick={() => onColorClick('ffffff')}></div>
           </div>
         }
       </div>

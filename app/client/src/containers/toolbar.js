@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import ToolbarComponent from '../components/toolbar';
+import * as PaintActions from '../actions/paint';
+import * as RecordActions from '../actions/record';
 import Modal from './modal';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 class Toolbar extends Component {
 
@@ -16,8 +20,6 @@ class Toolbar extends Component {
       isSaving: false
     }
 
-    console.log('props: ', this.props)
-
     this.onRecordClick = this.onRecordClick.bind(this)
     this.onPauseToggle = this.onPauseToggle.bind(this)
     this.onSaveClick = this.onSaveClick.bind(this)
@@ -25,12 +27,21 @@ class Toolbar extends Component {
     this.onColorClick = this.onColorClick.bind(this)
     this.onSaveCancel = this.onSaveCancel.bind(this)
     this.onEditClick = this.onEditClick.bind(this)
+    this.onMouseLeave = this.onMouseLeave.bind(this)
   }
 
   onRecordClick() {
     console.log('on record click');
     
-    if(!this.state.isRecording) {
+    if(!this.props.isRecordingActive) {
+      this.props.actions.boundToggleRecording();
+      this.props.actions.boundSetPause(true)
+    } else {
+      this.props.actions.boundToggleRecording();
+      this.props.actions.boundSetPause(false)
+    }
+
+    /*if(!this.state.isRecording) {
       this.setState({
         isRecording: !this.state.isRecording, 
         isPaused: false
@@ -40,7 +51,7 @@ class Toolbar extends Component {
         isRecording: !this.state.isRecording, 
         isPaused: true
       })
-    }
+    }*/
 
     
     // Change record icon to recordING icon
@@ -49,15 +60,19 @@ class Toolbar extends Component {
   }
 
   onEditClick() {
-    console.log('ooon edit click')
-    this.props.onToolbarEditClick()
+    console.log('ooon edit click', this.props.actions)
+    this.props.actions.boundToggleDrawing()
   }
 
   onPauseToggle() {
-    this.setState({
+
+    this.props.actions.boundToggleRecording();
+    this.props.actions.boundTogglePause();
+
+    /*this.setState({
       isRecording: !this.state.isRecording, 
       isPaused: !this.state.isPaused
-    })
+    })*/
   }
 
   onSaveClick() {
@@ -75,19 +90,35 @@ class Toolbar extends Component {
   onStrokeClick(value) {
     
     if(value) {
-      this.props.onStrokeUpdate(value)
+      this.props.actions.boundActiveWidth(value)
     }
 
     this.setState({
-      isStrokeActive: !this.state.isStrokeActive
+      isStrokeActive: !this.state.isStrokeActive, 
+      isColorActive: false
     })
-    // Check current stroke 
   }
 
-  onColorClick() {
+  onColorClick(value) {
+
+    if(value) {
+      this.props.actions.boundActiveColor(value)
+    }
+
     this.setState({
-      isColorActive: !this.state.isColorActive
+      isColorActive: !this.state.isColorActive, 
+      isStrokeActive: false
     })
+  }
+
+  onMouseLeave() {
+    /*if(this.props.isRecordingActive) {
+      // Interval of 5 second
+      setTimeout(() => {
+        this.props.onCloseClick()
+      }, 2000)  
+    }
+    console.log('mouse has left the div!');*/
   }
 
   render() {
@@ -111,9 +142,10 @@ class Toolbar extends Component {
           onColorClick={this.onColorClick}
           isStrokeActive={this.state.isStrokeActive}
           isColorActive={this.state.isColorActive}
-          isRecording={this.state.isRecording}
+          isRecording={this.props.isRecordingActive}
           onCloseClick={this.props.onCloseClick}
-          isPaused={this.state.isPaused}
+          isPaused={this.props.isPauseActive}
+          onMouseLeave={this.onMouseLeave}
         />
       </div>
     )
@@ -121,4 +153,20 @@ class Toolbar extends Component {
 
 }
 
-export default Toolbar;
+function mapStateToProps(state) {
+	return { 
+    activeDrawingColor: state.activeDrawingColor, 
+    activeDrawingWidth: state.activeDrawingWidth, 
+    isDrawingActive: state.isDrawingActive, 
+    isRecordingActive: state.isRecordingActive, 
+    isPauseActive: state.isPauseActive
+	}
+} 
+
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: bindActionCreators(Object.assign({}, PaintActions, RecordActions), dispatch)
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Toolbar); 
