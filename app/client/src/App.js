@@ -15,7 +15,6 @@ import Paint from './containers/paint';
 
 class App extends Component {
   render() {
-    console.log('render')
     return (
       <Router>
         <div className="wrapper">

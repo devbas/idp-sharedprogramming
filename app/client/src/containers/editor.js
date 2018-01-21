@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import EditorComponent from '../components/editor';
-import * as ace from 'brace';
+import brace from 'brace';
 import 'brace/mode/html';
+import 'brace/mode/css';
+import 'brace/mode/javascript';
 import 'brace/theme/monokai';
 import jsBeautify from 'js-beautify';
 import { html as htmlBeautify, css as cssBeautify } from 'js-beautify';
-import openSocket from 'socket.io-client';
-import _ from 'lodash'
-import async from 'async'
-import axios from 'axios';
+import firebase from '../lib/firebase'
+import Firepad from 'firepad'
 import * as PaintActions from '../actions/paint'; 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'; 
 import exampleData from '../assets/example-data.json'
-
-const socket = openSocket(window.location.hostname === 'localhost' ? 'http://localhost:8002': 'http:' + window.location.hostname + ':8002');
-
+import axios from 'axios'
+global.ace = brace;
+global.ace.require = global.ace.acequire;
 
 class Editor extends Component {
 
@@ -23,136 +23,21 @@ class Editor extends Component {
     super(props)
 
     this.state = {
-      editorValue: null, 
-      lastUpdate: null, 
-      cursorId: false, 
-      markers: [], 
-      socketInserted: false, 
-      showTree: false, 
       showToolbar: false, 
+      showTree: false, 
+      currentFileOpen: 'index', 
       indexHtml: false, 
       styleScript: false,
       jsScript: false, 
       svgLogo: exampleData.svg,
-      currentFileOpen: 'index'
     }
 
-    this.updateEditorCursor = this.updateEditorCursor.bind(this)
     this.onTreeToggleClick = this.onTreeToggleClick.bind(this)
     this.onToolbarToggleClick = this.onToolbarToggleClick.bind(this)
     this.loadInEditor = this.loadInEditor.bind(this)
-
-    this.subscribeToEditorValue((err, editorValue) => {
-      this.setState({ 
-        lastUpdate: editorValue
-      });
-
-      let range = new Range({
-        start: {
-          row: editorValue.start.row, 
-          column: editorValue.start.column
-        }, 
-        end:{
-          row: editorValue.end.row, 
-          column: editorValue.end.column
-        }
-      })
-
-      if(editorValue.action === 'insert' && !this.state.socketInserted) {
-        let startLine = editorValue.start.row
-
-        if(editorValue.lines.length > 1) {
-
-          /*let delta = {
-            action: 'insertLines', 
-            range: {
-              start: {
-                row: editorValue.start.row, 
-                column: editorValue.start.column
-              }, 
-              end: {
-                row: editorValue.end.row, 
-                column: editorValue.end.column
-              }
-            }, 
-            lines: editorValue.lines*/
-
-            console.log('startLine: ', startLine, '   editorValue: ', editorValue.lines.join('\n'), '   Total Length: ', startLine + editorValue.lines.length)
-
-            this.setState({ socketInserted: true })
-            this.editor.getSession().getDocument().insert(startLine, editorValue.lines.join('\n'))
-            
-
-          //}
-
-          //console.log('lets apply deltas', delta);
-
-          //this.editor.getSession().getDocument().applyDeltas([delta]);*/
-
-          /*
-
-            this.setState({ socketInserted: true })
-            this.editor.getSession().getDocument().insert({ row: startLine, column: 0 }, line)        
-          })*/
-        } else {
-          this.setState({ socketInserted: true })
-          this.editor.getSession().getDocument().insert(editorValue.start, editorValue.lines[0])    
-        }
-
-      } else if(editorValue.action === 'remove' && !this.state.socketInserted) {
-        console.log('editorValue: ', editorValue)
-        
-        console.log('range: ', range)
-        this.editor.getSession().getDocument().remove({ start: editorValue.start, end: editorValue.end })
-      }
-
-    })
-
-    // Register new cursor
-    if(!this.state.cursorId) {
-      socket.emit('registerCursor');
-    }
-
-    socket.on('assignedCursorId', cursorId => this.setState({ cursorId: cursorId }))
-    socket.on('cursorUpdate', cursor => this.updateEditorCursor(cursor))
-    socket.on('openFile', (key) => {
-      this.setState({ currentFileOpen: key })  
-    })
   }
-  
-  componentDidMount() {
-    this.editor = ace.edit('editor-mirror');
-    this.editor.setOptions({
-      mode: 'ace/mode/html',
-      theme: 'ace/theme/monokai',
-      fontSize: 13,
-      tabSize: 2,
-      showLineNumbers: true,
-      maxLines: Infinity, 
-      minLines: 50, 
-      enableBasicAutocompletion: false, 
-      enableLiveAutocompletion: false
-    }) 
 
-    this.editor.getSession().on('change', (e) => {
-      let editorValue = this.editor.getValue();
-
-      console.log('triggered change')
-      let cursor = this.editor.selection.getCursor();
-
-      socket.emit('updateCursor', { cursorId: this.state.cursorId, position: { row: cursor.row, column: cursor.column } }) 
-      
-      if(this.state.currentFileOpen === 'index') this.setState({ indexHtml: editorValue })
-      if(this.state.currentFileOpen === 'style') this.setState({ styleScript: editorValue })
-      if(this.state.currentFileOpen === 'script') this.setState({ jsScript: editorValue })
-
-      if(!this.state.socketInserted) {
-        socket.emit('subscribeToEditor', e);
-      } else {
-        this.setState({ socketInserted: false })
-      }
-    })
-
+  componentWillMount() {
     let hostname = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':3000' : 'http://' + window.location.hostname + ':8001';
 
     axios.get(hostname + '/test/index.html')
@@ -169,112 +54,38 @@ class Editor extends Component {
     .then((result) => {
       this.setState({ jsScript: result.data })
     })
-
-    this.loadInEditor('index.html')
   }
 
-  componentWillUnmount() {
+  componentDidMount() {
     
-    let host = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':8001' : 'http://' + window.location.hostname + ':8001';
-    
-    axios.post(`${host}/api/code/save`, {
-      html: this.state.indexHtml, 
-      style: this.state.styleScript, 
-      script: this.state.jsScript
+    this.editor = brace.edit('editor-mirror'); 
+    this.editor.setOptions({
+      mode: 'ace/mode/html',
+      theme: 'ace/theme/monokai',
+      fontSize: 13,
+      tabSize: 2,
+      enableBasicAutocompletion: false, 
+      enableLiveAutocompletion: false
+    }) 
+
+    this.session = this.editor.getSession();
+    this.session.setUseWrapMode(true);
+    this.session.setUseWorker(false);
+
+    let firepadRef = this.getFirebaseRef();
+    console.log('firepadRef: ', firepadRef)
+
+    let firepad = Firepad.fromACE(firepadRef, this.editor, {
+      defaultText: this.state.indexHtml
+    });
+
+    this.editor.getSession().on('change', (e) => {
+      let editorValue = this.editor.getValue();
+
+      if(this.state.currentFileOpen === 'index') this.setState({ indexHtml: editorValue })
+      if(this.state.currentFileOpen === 'style') this.setState({ styleScript: editorValue })
+      if(this.state.currentFileOpen === 'script') this.setState({ jsScript: editorValue })
     })
-  }
-
-  updateEditorCursor(cursor) {
-    
-    if(cursor.cursorId !== this.state.cursorId) {
-
-      let stateMarkers = this.state.markers; 
-
-      stateMarkers = _.map(stateMarkers, (marker) => {
-        if(marker.cursorId === cursor.cursorId) {
-          return { cursorId: cursor.cursorId, row: cursor.position.row, column: cursor.position.column }
-        } else {
-          return marker
-        }
-      })
-
-      if(_.filter(stateMarkers, { cursorId: cursor.cursorId }).length === 0) {
-        stateMarkers.push(cursor)
-      }
-      
-      this.setState({ markers: stateMarkers })
-
-      let marker = {};
-      marker.cursors = this.state.markers;
-      marker.update = function(html, markerLayer, session, config) {
-        async.waterfall([
-         (callback) => {
-          for(let i = 0; html.length >= i; i++) {
-
-            if(html[i] && html[i].includes(cursor.cursorId)) {
-              delete html[i]
-            }
-
-            if(i >= html.length) {
-              callback(false, html)
-              break;
-              
-            }
-          }
-         }, 
-         (html, callback) => {
-
-          let start = config.firstRow
-          let end = config.lastRow
-          let cursors = this.cursors
-
-          for (let i = 0; i < cursors.length; i++) {
-            let cursor = cursors[i]
-            if(cursor.row < start) {
-              continue
-            } else if(cursor.row > end) {
-              break
-              // Add new line
-            } else {
-
-              //if(cursor.row > self.editor.getSession().getLength()) {
-              //  self.editor.getSession().getDocument().insertNewLine({ row: cursor.row, column: 0 })
-              //}
-
-              let screenPos = session.documentToScreenPosition(cursor)
-
-              let height = config.lineHeight
-              let cursorWidth = 2; 
-              let width = config.characterWidth;
-              let top = markerLayer.$getTop(screenPos.row, config);
-              let left = markerLayer.$padding + screenPos.column * width;
-
-              let customCursor = `<div class="custom-cursor" id="${cursor.cursorId}" style="height: ${height}px; top: ${top}px; left: ${left}px; width: ${cursorWidth}px;"></div>`;
-            
-              html.push(customCursor)
-            }
-          }
-         }
-        ])
-        
-      }
-
-      marker.redraw = function() {
-        this.session._signal("changeFrontMarker");
-      }
-
-      marker.addCursor = function() {
-        marker.redraw()
-      }
-
-      marker.session = this.editor.session;
-      marker.session.addDynamicMarker(marker, true)
-    }
-
-  }
-
-  subscribeToEditorValue(callback) {
-    socket.on('newValue', newValue => callback(false, newValue))
   }
 
   onTreeToggleClick() {
@@ -298,12 +109,21 @@ class Editor extends Component {
     }))
   }
 
+  getFirebaseRef() {
+    let ref = firebase.database().ref();
+    let hash = window.location.hash.replace(/#/g, '');
+    if (hash) {
+      ref = ref.child(hash);
+    } else {
+      ref = ref.push(); // generate unique location.
+      window.location = window.location + '#' + ref.key; // add it as a hash to the URL.
+    }
+    
+    return ref;
+  }
+
   loadInEditor(key) {
-
-    socket.emit('openFile', key)
-
     if(key === 'index.html') {
-      console.log('load it!');
       this.setState({
         currentFileOpen: 'index'
       })
@@ -325,9 +145,8 @@ class Editor extends Component {
         end: {row: 1000, column: Number.MAX_VALUE}
       }, cssBeautify(this.state.styleScript))
       this.editor.session.setMode("ace/mode/css")
-      
     }
-
+  
     if(key === 'script.js') {
       this.setState({
         currentFileOpen: 'script'
@@ -339,7 +158,7 @@ class Editor extends Component {
       }, jsBeautify(this.state.jsScript))
       this.editor.session.setMode("ace/mode/javascript")
     }
-
+  
     if(key === 'logo.svg') {
       this.setState({
         currentFileOpen: 'logo'
@@ -351,30 +170,30 @@ class Editor extends Component {
       }, htmlBeautify(this.state.svgLogo))
       this.editor.session.setMode("ace/mode/html")
     }
+  }
 
-    if(key === 'contact.html') {
-      this.setState({
-        currentFileOpen: 'contact'
-      })
-    }
+  componentWillUnmount() {
+    
+    let host = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':8001' : 'http://' + window.location.hostname + ':8001';
+    
+    axios.post(`${host}/api/code/save`, {
+      html: this.state.indexHtml, 
+      style: this.state.styleScript, 
+      script: this.state.jsScript
+    })
   }
 
   render() {
-    console.log('rerender');
-    return(
+    return (
       <div className="editor-box">
-        <EditorComponent 
-          updateRef={this.updateRef}
+        <EditorComponent
           onTreeToggleClick={this.onTreeToggleClick}
           showTree={this.state.showTree}
           onToolbarToggleClick={this.onToolbarToggleClick}
           showToolbar={this.state.showToolbar}
-          loadInEditor={this.loadInEditor}
-          indexHtml={this.state.indexHtml} 
-          styleScript={this.state.styleScript}
-          jsScript={this.state.jsScript}
           canvasActive={this.props.isDrawingActive}
-          isRecording={this.props.isRecordingActive}/>
+          isRecording={this.props.isRecordingActive}
+          loadInEditor={this.loadInEditor}/>
       </div>
     )
   }
@@ -382,16 +201,16 @@ class Editor extends Component {
 }
 
 function mapStateToProps(state) {
-	return { 
+  return { 
     isDrawingActive: state.isDrawingActive, 
     isRecordingActive: state.isRecordingActive
-	}
+  }
 } 
 
 function mapDispatchToProps(dispatch) {
-	return {
-		actions: bindActionCreators(PaintActions, dispatch)
-	}
+  return {
+	actions: bindActionCreators(PaintActions, dispatch)
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Editor); 
