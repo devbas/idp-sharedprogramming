@@ -7,8 +7,8 @@ router.post('/save', function(req, res) {
     console.log('lets save this!', req.body);
 
     html = req.body.html;
-    style = req.body.style; 
-    script = req.body.script;
+    //style = req.body.style; 
+    //script = req.body.script;
     
     if(process.env.NODE_ENV === 'production') {
         fs.writeFile('./app/client/build/test/index.html', html, function(err) {
@@ -16,7 +16,7 @@ router.post('/save', function(req, res) {
     
             console.log('html on prod saved!');
         })
-        console.log(path.dirname(__filename));
+        /*console.log(path.dirname(__filename));
         fs.writeFile('./app/client/build/test/script.js', script, function(err) {
             if(err) console.log('err: ', err) 
     
@@ -27,14 +27,14 @@ router.post('/save', function(req, res) {
             if(err) console.log('err: ', err)  
     
             console.log('css on prod saved!');
-        })
+        })*/
     } else {
         fs.writeFile('./app/client/public/test/index.html', html, function(err) {
             if(err) console.log('err: ', err) 
     
             console.log('html saved!');
         })
-        console.log(path.dirname(__filename));
+       /* console.log(path.dirname(__filename));
         fs.writeFile('./app/client/public/test/script.js', script, function(err) {
             if(err) console.log('err: ', err) 
     
@@ -45,7 +45,7 @@ router.post('/save', function(req, res) {
             if(err) console.log('err: ', err)  
     
             console.log('css saved!');
-        })
+        })*/
     }
 
     

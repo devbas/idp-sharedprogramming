@@ -86,9 +86,9 @@ class Editor extends Component {
       console.log('currentFileOpen: ', this.state.currentFileOpen, '     editorValue: ', editorValue)
 
       if(!this.state.loadedInEditor) {
-        if(this.state.currentFileOpen === 'index') this.setState({ indexHtml: editorValue })
-        if(this.state.currentFileOpen === 'style') this.setState({ styleScript: editorValue })
-        if(this.state.currentFileOpen === 'script') this.setState({ jsScript: editorValue })
+        if(this.state.currentFileOpen === 'index.html') this.setState({ indexHtml: editorValue })
+        if(this.state.currentFileOpen === 'main.css') this.setState({ styleScript: editorValue })
+        if(this.state.currentFileOpen === 'script.js') this.setState({ jsScript: editorValue })
       } else {
         this.setState({ loadedInEditor: false })
       }
@@ -142,14 +142,14 @@ class Editor extends Component {
   }
 
   loadInEditor(key) {
-    console.log('lets change it ', key)
+
     if(key === 'index.html') {
 
       new Promise((resolve, reject) => {
         this.setState((prevState) => {
           resolve()
           return {
-            currentFileOpen: 'index'
+            currentFileOpen: 'index.html'
           }
         })
       }).then(() => {
@@ -170,7 +170,7 @@ class Editor extends Component {
         this.setState((prevState) => {
           resolve()
           return {
-            currentFileOpen: 'style'
+            currentFileOpen: 'main.css'
           }
         })
       }).then(() => {
@@ -189,7 +189,7 @@ class Editor extends Component {
         this.setState((prevState) => {
           resolve()
           return {
-            currentFileOpen: 'script'
+            currentFileOpen: 'script.js'
           }
         })
       }).then(() => {
@@ -200,18 +200,7 @@ class Editor extends Component {
         this.editor.session.setMode("ace/mode/javascript")
       })
     }
-  
-    /*if(key === 'logo.svg') {
-      this.setState({
-        currentFileOpen: 'logo'
-      })
 
-      this.editor.session.replace({
-        start: {row: 0, column: 0},
-        end: {row: 1000, column: Number.MAX_VALUE}
-      }, htmlBeautify(this.state.svgLogo))
-      this.editor.session.setMode("ace/mode/html")
-    }*/
   }
 
   componentWillUnmount() {
@@ -219,9 +208,7 @@ class Editor extends Component {
     let host = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':' + window.location.port : 'http://' + window.location.hostname + ':' + window.location.port;
     
     axios.post(`${host}/api/code/save`, {
-      html: this.state.indexHtml, 
-      style: this.state.styleScript, 
-      script: this.state.jsScript
+      html: this.state.indexHtml
     })
   }
 
