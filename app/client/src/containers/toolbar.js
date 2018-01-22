@@ -153,6 +153,7 @@ class Toolbar extends Component {
           isPaused={this.props.isPauseActive}
           onWipeClick={this.onWipeClick}
           onMouseLeave={this.onMouseLeave}
+          isDrawingActive={this.props.isDrawingActive}
         />
       </div>
     )

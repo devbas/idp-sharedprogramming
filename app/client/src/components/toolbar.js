@@ -16,7 +16,9 @@ const Toolbar = ({
   isRecording, 
   onCloseClick, 
   isPaused, 
-  onMouseLeave
+  onMouseLeave, 
+  onWipeClick, 
+  isDrawingActive
 }) => (
   <div className="toolbar">
     <div className="toolbar-box animated slideInDown" onMouseLeave={onMouseLeave}>
@@ -51,7 +53,14 @@ const Toolbar = ({
 
       <div className="left toolbar-divider"></div>
 
-      <div className="left edit-icon" onClick={onEditClick}></div>
+      {isDrawingActive &&
+        <div className="left edit-icon edit-icon-active" onClick={onEditClick}></div>
+      }
+
+      {!isDrawingActive &&
+        <div className="left edit-icon" onClick={onEditClick}></div>
+      }
+      
       <div className="left stroke-menu-box">
         <div className="left stroke-icon" onClick={onStrokeClick}></div>
         {isStrokeActive &&
@@ -78,6 +87,7 @@ const Toolbar = ({
           </div>
         }
       </div>
+      <div className="left delete-icon" onClick={onWipeClick}></div>
 
       <div className="left toolbar-divider"></div>
 

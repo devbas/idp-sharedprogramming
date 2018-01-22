@@ -330,7 +330,7 @@
 }
 
 .toolbar {
-  width: 852px; 
+  width: 944px; 
   margin-left: auto;
   margin-right: auto;
   position: absolute;
@@ -617,6 +617,29 @@
   transition: background-color ease-in-out 0.1s
 }
 
+.edit-icon-active {
+  background-image: url('./assets/images/edit.svg');
+  height: 35px;
+  width: 35px;
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(000, 000, 000, 0.3);
+  transition: background-color ease-in-out 0.1s; 
+  margin: 7.5px;
+  border-radius: 3px;
+}
+
+.delete-icon {
+  background-image: url('./assets/images/delete-gray.svg');
+  height: 50px;
+  width: 50px;
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: background-color ease-in-out 0.1s
+}
+
 .edit-icon, 
 .stroke-icon, 
 .color-icon, 
@@ -626,7 +649,8 @@
 .pause-icon, 
 .play-icon, 
 .record-icon, 
-.close-icon {
+.close-icon, 
+.delete-icon {
   padding-top: 18px;
   padding-bottom: 18px;
   padding-left: 21px;
@@ -642,7 +666,8 @@
 .pause-icon:hover, 
 .play-icon:hover, 
 .record-icon:hover, 
-.close-icon:hover {
+.close-icon:hover, 
+.delete-icon:hover {
   background-color: #eeeeee;
   cursor: pointer; 
   transition: background-color ease-in-out 0.1s;
