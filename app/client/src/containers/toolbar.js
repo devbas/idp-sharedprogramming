@@ -27,6 +27,7 @@ class Toolbar extends Component {
     this.onStrokeClick = this.onStrokeClick.bind(this)
     this.onColorClick = this.onColorClick.bind(this)
     this.onSaveCancel = this.onSaveCancel.bind(this)
+    this.onSaveSubmit = this.onSaveSubmit.bind(this)
     this.onEditClick = this.onEditClick.bind(this)
     this.onMouseLeave = this.onMouseLeave.bind(this)
     this.onWipeClick = this.onWipeClick.bind(this)
@@ -84,6 +85,12 @@ class Toolbar extends Component {
   }
 
   onSaveCancel() {
+    this.setState({
+      isSaving: !this.state.isSaving
+    })
+  }
+
+  onSaveSubmit() {
     this.setState({
       isSaving: !this.state.isSaving
     })
