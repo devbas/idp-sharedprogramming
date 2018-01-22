@@ -10,9 +10,17 @@ export const isRecordingActive = createReducer(false, {
 })
 
 export const isPauseActive = createReducer(true, {
-    [types.TOGGLE_PAUSE](state, action) {
-      let newState = !action.isPauseActive
-      
-      return newState
-    }
-  })
+  [types.TOGGLE_PAUSE](state, action) {
+    let newState = !action.isPauseActive
+    
+    return newState
+  }
+})
+
+export const currentIdentifier = createReducer(false, {
+  [types.SET_IDENTIFIER](state, action) {
+    let newState = action.identifier
+
+    return newState
+  }
+})

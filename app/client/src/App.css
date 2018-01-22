@@ -290,6 +290,10 @@
   position: fixed;
 }
 
+.canvas-box .arrow-left {
+  position: absolute;
+}
+
 .tree {
   width: 300px;
   background-color: #000;

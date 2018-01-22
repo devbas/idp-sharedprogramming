@@ -19,7 +19,7 @@ class Reload extends Component {
     let url = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':3000' + '/test/index.html' : 'http://' + window.location.hostname + ':8001' + '/test/index.html';
     console.log('url: ', url);
     return(
-      <ReloadComponent url={url} onEditorToggleClick={this.onEditorToggleClick} />
+      <ReloadComponent url={url} onEditorToggleClick={this.onEditorToggleClick} activeHash={window.location.hash.replace(/#/g, '')}/>
     )
   }
 

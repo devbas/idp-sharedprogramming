@@ -66,6 +66,9 @@ class Canvas extends Component {
 
   componentWillUnmount() {
     document.removeEventListener("mouseup", this.handleMouseUp);
+    this.setState({ isDrawing: false })
+    // Remove Toolbar
+    // Remove canvas
   }
 
   handleMouseDown(mouseEvent) {
@@ -129,6 +132,9 @@ class Canvas extends Component {
   render() {
     return (
       <div className="canvas-box">
+        <Link to={'/#' + window.location.hash.replace(/#/g, '')}>
+          <div className="arrow arrow-left"></div>
+        </Link>
         <div
           className="draw-area"
           ref="drawArea"

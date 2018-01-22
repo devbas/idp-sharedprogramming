@@ -10,6 +10,7 @@ import { html as htmlBeautify, css as cssBeautify } from 'js-beautify';
 import firebase from '../lib/firebase'
 import Firepad from 'firepad'
 import * as PaintActions from '../actions/paint'; 
+import * as RecordActions from '../actions/record'; 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'; 
 import exampleData from '../assets/example-data.json'
@@ -73,7 +74,6 @@ class Editor extends Component {
     this.session.setUseWorker(false);
 
     let firepadRef = this.getFirebaseRef();
-    console.log('firepadRef: ', firepadRef)
 
     let firepad = Firepad.fromACE(firepadRef, this.editor, {
       defaultText: this.state.indexHtml
@@ -89,7 +89,6 @@ class Editor extends Component {
   }
 
   onTreeToggleClick() {
-    console.log('click!')
     this.setState(({ showTree }) => ({
       showTree: !showTree
     }))
@@ -110,13 +109,26 @@ class Editor extends Component {
   }
 
   getFirebaseRef() {
+
+    //if(this.props.identifier) {
     let ref = firebase.database().ref();
-    let hash = window.location.hash.replace(/#/g, '');
+    //} else {
+      //let ref = firebase.database().ref();
+    //}
+
+    let hash = this.props.identifier ? this.props.identifier : window.location.hash.replace(/#/g, '');
+  
     if (hash) {
+      console.log('hash already found!');
       ref = ref.child(hash);
+      this.props.actions.boundSetIdentifier(ref.key)
     } else {
+      console.log('lets not do this one')
       ref = ref.push(); // generate unique location.
       window.location = window.location + '#' + ref.key; // add it as a hash to the URL.
+      //if(!this.props.identifier) {
+      this.props.actions.boundSetIdentifier(ref.key)
+      //}
     }
     
     return ref;
@@ -133,6 +145,8 @@ class Editor extends Component {
         end: {row: 1000, column: Number.MAX_VALUE}
       }, htmlBeautify(this.state.indexHtml))
       this.editor.session.setMode("ace/mode/html")
+      let editorValue = this.editor.getValue();
+
     }
 
     if(key === 'main.css') {
@@ -145,6 +159,8 @@ class Editor extends Component {
         end: {row: 1000, column: Number.MAX_VALUE}
       }, cssBeautify(this.state.styleScript))
       this.editor.session.setMode("ace/mode/css")
+      let editorValue = this.editor.getValue();
+      this.setState({ styleScript: editorValue })
     }
   
     if(key === 'script.js') {
@@ -193,7 +209,8 @@ class Editor extends Component {
           showToolbar={this.state.showToolbar}
           canvasActive={this.props.isDrawingActive}
           isRecording={this.props.isRecordingActive}
-          loadInEditor={this.loadInEditor}/>
+          loadInEditor={this.loadInEditor}
+          activeHash={this.props.identifier}/>
       </div>
     )
   }
@@ -203,13 +220,14 @@ class Editor extends Component {
 function mapStateToProps(state) {
   return { 
     isDrawingActive: state.isDrawingActive, 
-    isRecordingActive: state.isRecordingActive
+    isRecordingActive: state.isRecordingActive, 
+    identifier: state.currentIdentifier
   }
 } 
 
 function mapDispatchToProps(dispatch) {
   return {
-	actions: bindActionCreators(PaintActions, dispatch)
+	  actions: bindActionCreators(Object.assign({}, PaintActions, RecordActions), dispatch)
   }
 }
 

@@ -14,6 +14,13 @@ export function togglePause({ isPauseActive }) {
   }
 }
 
+export function setIdentifier({ identifier }) {
+  return {
+    type: types.SET_IDENTIFIER, 
+    identifier
+  }
+}
+
 export function boundToggleRecording() {
   return (dispatch, getState) => {
     dispatch(toggleRecording({ isRecordingActive: getState().isRecordingActive }))
@@ -29,5 +36,11 @@ export function boundTogglePause() {
 export function boundSetPause(status) {
   return (dispatch, getState) => {
     dispatch(togglePause({ isPauseActive: status }))
+  }
+}
+
+export function boundSetIdentifier(identifier) {
+  return (dispatch, getState) => {
+    dispatch(setIdentifier({ identifier: identifier }))
   }
 }

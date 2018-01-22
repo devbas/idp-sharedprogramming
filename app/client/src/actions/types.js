@@ -6,3 +6,5 @@ export const SET_LINES = 'SET_LINES';
 
 export const TOGGLE_RECORDING = 'TOGGLE_RECORDING';
 export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
+
+export const SET_IDENTIFIER = 'SET_IDENTIFIER';

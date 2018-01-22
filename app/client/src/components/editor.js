@@ -18,7 +18,8 @@ const Editor = ({
   jsScript, 
   onToolbarEditClick, 
   canvasActive, 
-  isRecording
+  isRecording, 
+  activeHash
  }) => (
   <div className="editor">
 
@@ -34,11 +35,11 @@ const Editor = ({
       </div>
     }
     
-    <Link to="/canvas">
+    <Link to={'/canvas/#' + activeHash}>
       <div className="arrow arrow-right"></div>
     </Link>
 
-    <Link to="/reload">
+    <Link to={'/reload/#' + activeHash}>
       <div className="arrow arrow-bottom"></div>
     </Link>
    
