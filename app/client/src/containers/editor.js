@@ -40,7 +40,7 @@ class Editor extends Component {
   }
 
   componentWillMount() {
-    let hostname = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':' + window.location.port : 'http://' + window.location.hostname + ':' + window.location.port;
+    let hostname = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':8001' : 'http://' + window.location.hostname + ':' + window.location.port;
     console.log('load from hostname: ', hostname)
     axios.get(hostname + '/test/index.html')
     .then((result) => {
@@ -205,10 +205,10 @@ class Editor extends Component {
 
   componentWillUnmount() {
     
-    let host = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':' + window.location.port : 'http://' + window.location.hostname + ':' + window.location.port;
+    let host = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':8001' : 'http://' + window.location.hostname + ':' + window.location.port;
     
     axios.post(`${host}/api/code/save`, {
-      html: this.state.indexHtml
+      html: this.editor.getValue()
     })
   }
 

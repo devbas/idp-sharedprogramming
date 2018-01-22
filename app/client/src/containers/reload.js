@@ -17,7 +17,7 @@ class Reload extends Component {
   componentDidMount() {
     setTimeout(() => {
       this.setState({ iframeAllowed: true })
-    }, 1500)
+    }, 500)
   }
 
   onEditorToggleClick() {
