@@ -27,7 +27,7 @@ app.use('/api', APIRouter);
 if(app.get('env') === 'development') {
   app.use(express.static(path.join(__dirname, './app/client/build')));
 
-  app.get('/', function(req, res) {
+  app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname, 'app/client/build', 'index.html'));
   })
 } else {

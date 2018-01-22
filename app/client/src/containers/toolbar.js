@@ -5,6 +5,7 @@ import * as RecordActions from '../actions/record';
 import Modal from './modal';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import Immutable from 'immutable';
 
 class Toolbar extends Component {
 
@@ -28,6 +29,7 @@ class Toolbar extends Component {
     this.onSaveCancel = this.onSaveCancel.bind(this)
     this.onEditClick = this.onEditClick.bind(this)
     this.onMouseLeave = this.onMouseLeave.bind(this)
+    this.onWipeClick = this.onWipeClick.bind(this)
   }
 
   onRecordClick() {
@@ -121,6 +123,10 @@ class Toolbar extends Component {
     console.log('mouse has left the div!');*/
   }
 
+  onWipeClick() {
+    this.props.actions.boundSetLines(Immutable.List())
+  }
+
   render() {
     return(
       <div>
@@ -145,6 +151,7 @@ class Toolbar extends Component {
           isRecording={this.props.isRecordingActive}
           onCloseClick={this.props.onCloseClick}
           isPaused={this.props.isPauseActive}
+          onWipeClick={this.onWipeClick}
           onMouseLeave={this.onMouseLeave}
         />
       </div>

@@ -40,8 +40,8 @@ class Editor extends Component {
   }
 
   componentWillMount() {
-    let hostname = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':3000' : 'http://' + window.location.hostname + ':8001';
-
+    let hostname = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':' + window.location.port : 'http://' + window.location.hostname + ':' + window.location.port;
+    console.log('load from hostname: ', hostname)
     axios.get(hostname + '/test/index.html')
     .then((result) => {
       this.setState({ indexHtml: result.data })
@@ -216,7 +216,7 @@ class Editor extends Component {
 
   componentWillUnmount() {
     
-    let host = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':8001' : 'http://' + window.location.hostname + ':8001';
+    let host = window.location.hostname === 'localhost' ? 'http://' + window.location.hostname + ':' + window.location.port : 'http://' + window.location.hostname + ':' + window.location.port;
     
     axios.post(`${host}/api/code/save`, {
       html: this.state.indexHtml, 
@@ -236,7 +236,8 @@ class Editor extends Component {
           canvasActive={this.props.isDrawingActive}
           isRecording={this.props.isRecordingActive}
           loadInEditor={this.loadInEditor}
-          activeHash={this.props.identifier}/>
+          activeHash={this.props.identifier}
+          currentFileOpen={this.state.currentFileOpen}/>
       </div>
     )
   }

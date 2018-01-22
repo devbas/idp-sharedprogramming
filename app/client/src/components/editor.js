@@ -19,7 +19,8 @@ const Editor = ({
   onToolbarEditClick, 
   canvasActive, 
   isRecording, 
-  activeHash
+  activeHash, 
+  currentFileOpen
  }) => (
   <div className="editor">
 
@@ -76,15 +77,33 @@ const Editor = ({
           <div className="level left">
             <div className="left full-width item" onClick={() => loadInEditor('index.html')}>
               <div className="html-icon"></div>
-              <span className="file-label">index.html</span>
+              {currentFileOpen === 'index' &&
+                <span className="file-label"><strong>index.html</strong></span>
+              }
+
+              {currentFileOpen !== 'index' &&
+                <span className="file-label">index.html</span>
+              }
             </div>
             <div className="left full-width item" onClick={() => loadInEditor('main.css')}>
               <div className="css-icon"></div>
-              <span className="file-label">main.css</span>
+              {currentFileOpen === 'style' &&
+                <span className="file-label"><strong>main.css</strong></span>
+              }
+
+              {currentFileOpen !== 'style' &&
+                <span className="file-label">main.css</span>
+              }
             </div>
             <div className="left full-width item" onClick={() => loadInEditor('script.js')}>
               <div className="js-icon"></div>
-              <span className="file-label">script.js</span>
+              {currentFileOpen === 'script' &&
+                <span className="file-label"><strong>script.js</strong></span>
+              }
+
+              {currentFileOpen !== 'script' &&
+                <span className="file-label">script.js</span>
+              }
             </div>            
           </div>
           
