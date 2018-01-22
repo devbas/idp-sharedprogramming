@@ -201,7 +201,7 @@ class Editor extends Component {
       })
     }
   
-    if(key === 'logo.svg') {
+    /*if(key === 'logo.svg') {
       this.setState({
         currentFileOpen: 'logo'
       })
@@ -211,7 +211,7 @@ class Editor extends Component {
         end: {row: 1000, column: Number.MAX_VALUE}
       }, htmlBeautify(this.state.svgLogo))
       this.editor.session.setMode("ace/mode/html")
-    }
+    }*/
   }
 
   componentWillUnmount() {

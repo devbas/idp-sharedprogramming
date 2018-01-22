@@ -4,7 +4,7 @@ import {
 	Link
 } from 'react-router-dom'; 
 
-const Reload = ({ url, onEditorToggleClick, activeHash}) => (
+const Reload = ({ url, onEditorToggleClick, activeHash, iframeAllowed}) => (
   <div className="reload-box">
     <div className="header">
       <Link to={'/#' + activeHash}>
@@ -12,7 +12,18 @@ const Reload = ({ url, onEditorToggleClick, activeHash}) => (
       </Link>
     </div>
     <div className="iframe-box">
-      <Iframe url={url} style={{width: '400px', height: '400px'}}></Iframe>
+      {iframeAllowed &&
+        <Iframe url={url} style={{width: '400px', height: '400px'}}></Iframe>
+      } 
+
+      {!iframeAllowed &&
+        <div className="sk-folding-cube">
+          <div className="sk-cube1 sk-cube"></div>
+          <div className="sk-cube2 sk-cube"></div>
+          <div className="sk-cube4 sk-cube"></div>
+          <div className="sk-cube3 sk-cube"></div>
+        </div>
+      }
     </div>
   </div>
 )

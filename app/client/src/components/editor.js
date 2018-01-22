@@ -85,11 +85,7 @@ const Editor = ({
             <div className="left full-width item" onClick={() => loadInEditor('script.js')}>
               <div className="js-icon"></div>
               <span className="file-label">script.js</span>
-            </div>
-            <div className="left full-width item" onClick={() => loadInEditor('logo.svg')}>
-              <div className="image-icon"></div>
-              <span className="file-label">logo.svg</span>
-            </div>
+            </div>            
           </div>
           
         </div>
@@ -122,6 +118,11 @@ const Editor = ({
 /*             <div className="left full-width item" onClick={() => loadInEditor('contact.html')}>
               <div className="html-icon"></div>
               <span className="file-label">contact.html</span>
+            </div>*/
+
+/* <div className="left full-width item" onClick={() => loadInEditor('logo.svg')}>
+              <div className="image-icon"></div>
+              <span className="file-label">logo.svg</span>
             </div>*/
 
 export default Editor;
