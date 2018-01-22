@@ -31,6 +31,7 @@ class Editor extends Component {
       styleScript: false,
       jsScript: false, 
       svgLogo: exampleData.svg,
+      loadedInEditor: false 
     }
 
     this.onTreeToggleClick = this.onTreeToggleClick.bind(this)
@@ -82,9 +83,15 @@ class Editor extends Component {
     this.editor.getSession().on('change', (e) => {
       let editorValue = this.editor.getValue();
 
-      if(this.state.currentFileOpen === 'index') this.setState({ indexHtml: editorValue })
-      if(this.state.currentFileOpen === 'style') this.setState({ styleScript: editorValue })
-      if(this.state.currentFileOpen === 'script') this.setState({ jsScript: editorValue })
+      console.log('currentFileOpen: ', this.state.currentFileOpen, '     editorValue: ', editorValue)
+
+      if(!this.state.loadedInEditor) {
+        if(this.state.currentFileOpen === 'index') this.setState({ indexHtml: editorValue })
+        if(this.state.currentFileOpen === 'style') this.setState({ styleScript: editorValue })
+        if(this.state.currentFileOpen === 'script') this.setState({ jsScript: editorValue })
+      } else {
+        this.setState({ loadedInEditor: false })
+      }
     })
   }
 
@@ -135,44 +142,63 @@ class Editor extends Component {
   }
 
   loadInEditor(key) {
+    console.log('lets change it ', key)
     if(key === 'index.html') {
-      this.setState({
-        currentFileOpen: 'index'
+
+      new Promise((resolve, reject) => {
+        this.setState((prevState) => {
+          resolve()
+          return {
+            currentFileOpen: 'index'
+          }
+        })
+      }).then(() => {
+        this.setState({ loadedInEditor: true })
+        this.editor.session.replace({
+          start: {row: 0, column: 0},
+          end: {row: 1000, column: Number.MAX_VALUE}
+        }, htmlBeautify(this.state.indexHtml))
+        this.editor.session.setMode("ace/mode/html")
       })
 
-      this.editor.session.replace({
-        start: {row: 0, column: 0},
-        end: {row: 1000, column: Number.MAX_VALUE}
-      }, htmlBeautify(this.state.indexHtml))
-      this.editor.session.setMode("ace/mode/html")
-      let editorValue = this.editor.getValue();
+      
 
     }
 
     if(key === 'main.css') {
-      this.setState({
-        currentFileOpen: 'style'
+      new Promise((resolve, reject) => {
+        this.setState((prevState) => {
+          resolve()
+          return {
+            currentFileOpen: 'style'
+          }
+        })
+      }).then(() => {
+        this.setState({ loadedInEditor: true })
+        this.editor.session.replace({
+          start: {row: 0, column: 0},
+          end: {row: 1000, column: Number.MAX_VALUE}
+        }, cssBeautify(this.state.styleScript))
+        this.editor.session.setMode("ace/mode/css")
       })
-
-      this.editor.session.replace({
-        start: {row: 0, column: 0},
-        end: {row: 1000, column: Number.MAX_VALUE}
-      }, cssBeautify(this.state.styleScript))
-      this.editor.session.setMode("ace/mode/css")
-      let editorValue = this.editor.getValue();
-      this.setState({ styleScript: editorValue })
+      //this.setState({ styleScript: editorValue })
     }
   
     if(key === 'script.js') {
-      this.setState({
-        currentFileOpen: 'script'
+      new Promise((resolve, reject) => {
+        this.setState((prevState) => {
+          resolve()
+          return {
+            currentFileOpen: 'script'
+          }
+        })
+      }).then(() => {
+        this.editor.session.replace({
+          start: {row: 0, column: 0},
+          end: {row: 1000, column: Number.MAX_VALUE}
+        }, jsBeautify(this.state.jsScript))
+        this.editor.session.setMode("ace/mode/javascript")
       })
-
-      this.editor.session.replace({
-        start: {row: 0, column: 0},
-        end: {row: 1000, column: Number.MAX_VALUE}
-      }, jsBeautify(this.state.jsScript))
-      this.editor.session.setMode("ace/mode/javascript")
     }
   
     if(key === 'logo.svg') {
