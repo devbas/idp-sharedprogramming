@@ -48,6 +48,7 @@ class Tree extends Component {
     this.modalOnCancel = this.modalOnCancel.bind(this);
     this.modalOnSubmit = this.modalOnSubmit.bind(this);
     this.onItemPlayClick = this.onItemPlayClick.bind(this);
+    this.onMovieCloseClick = this.onMovieCloseClick.bind(this);
 
   }
 
@@ -92,12 +93,19 @@ class Tree extends Component {
     }) 
   }
 
+  onMovieCloseClick() {
+    this.setState((prevState) => ({
+      itemPlaying: !prevState.itemPlaying
+    }))
+  }
+
   render() {
     return(
       <div>
 
         {this.state.itemPlaying &&
           <div className="movie-fullscreen">
+            <div className="movie-close" onClick={this.onMovieCloseClick}></div>
             <iframe src="https://player.vimeo.com/video/239532213" style={{height: '100vh', width: '100%'}}>
             </iframe>
           </div>

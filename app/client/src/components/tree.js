@@ -17,8 +17,8 @@ const transitionStyles = {
 //const content = 
 
 const Tree = ({ in: inProp, renderItem, onTreeClose, content, onItemDeleteClick, onItemPlayClick }) => (
-  <div>
-    <div className="tree-box animated slideInLeft">
+  <div className="tree-box animated slideInLeft">
+    <div className="tree-box-inner">
       <div className="header">
         <div onClick={onTreeClose} className="close-tree"></div>
         <div className="left header-title">Session List</div>

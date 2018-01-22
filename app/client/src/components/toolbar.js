@@ -24,11 +24,11 @@ const Toolbar = ({
     <div className="toolbar-box animated slideInDown" onMouseLeave={onMouseLeave}>
 
       {isRecording &&
-        <div className="left recording-icon" onClick={onRecordClick}></div>
+        <div className="left record-icon" onClick={onRecordClick}></div>
       }
 
       {!isRecording &&
-        <div className="left record-icon" onClick={onRecordClick}></div>
+        <div className="left recording-icon" onClick={onRecordClick}></div>
       }
 
       {isPaused &&
