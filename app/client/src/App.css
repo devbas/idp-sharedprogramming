@@ -722,22 +722,24 @@
 
 .stroke-menu {
   position: absolute; 
-  bottom: -115px; 
+  bottom: 58px; 
+  right: 90px;
   height: 80px;
   width: 80px;
   background-color: #fff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.24), 0px 0px 4px rgba(0, 0, 0, 0.12);
   padding: 10px;
+  border-radius: 3px;
 }
 
 .stroke-menu::before {
   content: "";
   position: absolute; 
-  border-bottom: 10px solid #fff;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  top: -10px;
-  left: calc(50% - 10px)
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid #fff;
+  border-top: 10px solid transparent;
+  top: calc(50% - 10px);
+  right: -10px;
 }
 
 .stroke-menu .item {
@@ -771,9 +773,9 @@
 
 .color-menu {
   position: absolute; 
-  bottom: -153px; 
-  left: 457px;
-  height: 137px;
+  bottom: -25px; 
+  right: 95px;
+  height: 140px;
   width: 309px;
   background-color: #fff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.24), 0px 0px 4px rgba(0, 0, 0, 0.12);
@@ -783,11 +785,11 @@
 .color-menu::before {
   content: "";
   position: absolute; 
-  border-bottom: 10px solid #fff;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  top: -10px;
-  left: calc(50% - 10px)
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid #fff;
+  border-top: 10px solid transparent;
+  top: calc(50% - 10px);
+  right: -10px;
 }
 
 .color-menu .item {
@@ -1104,4 +1106,144 @@ iframe {
   left: 20px; 
   cursor: pointer; 
   z-index: 99999999999999999;
+}
+
+@include keyframes(spin) {
+  from { @include transform(rotate(180deg)); }
+  to   { @include transform(rotate(720deg)); }
+}
+
+@include keyframes(reverse-spin) {
+  from { @include transform(rotate(720deg)); }
+  to   { @include transform(rotate(180deg)); }
+}
+
+#btn-main.active + ul > li > a {
+  @include transform(scaleY(1) scaleX(1) translateY(40px));
+  opacity: 1;
+}
+
+.btn-primary {
+  z-index: 9999999999;
+  position: fixed;
+  background-image: url('./assets/images/edit-white.svg'); 
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 45%; 
+}
+
+.btn-primary:before {
+  display: inline-block;
+  content: attr(data-text);
+  @include transform(translateY(0.1em));
+}
+
+.btn-primary.reverse-animation:before {
+  @include animation-name(reverse-spin);
+  @include animation-duration(300ms);
+  @include animation-iteration-count(1);
+  @include animation-timing-function(linear);
+}
+
+.btn-primary.active {
+  background-size: 55%;
+  background-image: url('./assets/images/ic_close_white.svg'); 
+}
+
+.btn-primary.active:before {
+  display: inline-block;
+  @include animation-name(spin);
+  @include animation-duration(300ms);
+  @include animation-iteration-count(1);
+  @include animation-timing-function(linear);
+  content: attr(data-active-text);
+}
+
+.btn-secondary {
+  @include transform(scaleY(0.4) scaleX(0.4));
+  @include transition(all 0.4s cubic-bezier(.64,.09,.08,1));
+}
+
+.btn-floating {
+  box-shadow: 0 3px 6px 0 rgba(0,0,0,0.4);
+  cursor: pointer;
+  display: block;
+  text-align: center;
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  line-height: 40px;
+  color: white;
+  margin: 10px;
+}
+
+.btn-color {
+  padding-top: 12.5px;
+  height: 47.5px;
+}
+
+.btn-width {
+  padding-top: 15px;
+  height: 45px;
+}
+
+.btn-large {
+  margin: -40px 0;
+  height: 70px;
+  width: 70px;
+  line-height: 60px;
+  font-size: 2.4em;
+}
+
+.fixed-action-btn {
+  position: absolute;
+  bottom: 43px;
+  right: 33px;
+  width: 50px;
+  margin: auto;
+}
+
+.fixed-action-btn ul {
+  z-index: 9999999999;
+  position: absolute;
+  top: -275px;
+  right: -24px;
+}
+
+.btn-stroke-width {
+  width: 40px; 
+  height: 5px; 
+  background-color: #f2994a; 
+  margin-left: auto;
+  margin-right: auto;
+  
+}
+
+.btn-stroke-color {
+  background-color: #f2994a;
+  background-repeat: no-repeat;
+  width: 35px;
+  height: 35px; 
+  border-radius: 50%; 
+  margin-left: auto; 
+  margin-right: auto; 
+  background-position: center;
+}
+
+.btn-stroke-delete {
+  background-image: url('./assets/images/delete-gray.svg'); 
+  background-repeat: no-repeat;
+  background-size: 40%; 
+  background-position: center;
+}
+
+.red    { background-color: red; }
+.yellow { background-color: yellow; }
+.green  { background-color: green; }
+.blue   { background-color: blue; }
+.white  { background-color: white;}
+
+ul {
+  list-style-type: none;
+  padding: 0;
 }

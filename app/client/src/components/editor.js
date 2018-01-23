@@ -5,6 +5,7 @@ import {
 import Tree from '../containers/tree';
 import Toolbar from '../containers/toolbar';
 import Canvas from '../containers/canvas';
+import DrawingOptions from '../containers/drawOptions';
 
 const Editor = ({ 
   updateRef, 
@@ -88,6 +89,7 @@ const Editor = ({
     <div className="editor-mirror" id="editor-mirror">
       <div ref={updateRef} style={{width: '100%', height: '100%'}}></div>
     </div>
+    <DrawingOptions/>
   </div>
 )
 

@@ -2,7 +2,7 @@ import createReducer from '../lib/createReducer';
 import * as types from '../actions/types';
 const { List } = require('immutable');
 
-export const activeDrawingColor = createReducer('800000', {
+export const activeDrawingColor = createReducer('f2994a', {
   [types.SET_ACTIVE_COLOR](state, action) {
     let newState = action.color
     

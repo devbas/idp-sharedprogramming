@@ -50,7 +50,7 @@ class Canvas extends Component {
       isDrawing: false, 
       color: false, 
       stroke: 30, 
-      color: '#800000'
+      color: '#f2994a'
     };
 
     this.handleMouseDown = this.handleMouseDown.bind(this);
