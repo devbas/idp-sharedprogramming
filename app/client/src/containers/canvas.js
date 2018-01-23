@@ -62,19 +62,21 @@ class Canvas extends Component {
 
   componentDidMount() {
     document.addEventListener("mouseup", this.handleMouseUp);
+    document.body.addEventListener("touchstart", this.handleMouseDown, false);
+    document.body.addEventListener("touchmove", this.handleMouseMove, false);
   }
 
   componentWillUnmount() {
     document.removeEventListener("mouseup", this.handleMouseUp);
+    document.removeEventListener("touchstart", this.handleMouseUp);
     this.setState({ isDrawing: false })
     // Remove Toolbar
     // Remove canvas
   }
 
   handleMouseDown(mouseEvent) {
-    if (mouseEvent.button != 0) {
-      return;
-    }
+    
+    mouseEvent.preventDefault()
 
     const point = this.relativeCoordinatesForEvent(mouseEvent);
     this.setState(prevState => ({
@@ -93,6 +95,7 @@ class Canvas extends Component {
   }
 
   handleMouseMove(mouseEvent) {
+    mouseEvent.preventDefault()
     if (!this.state.isDrawing) {
       return;
     }
@@ -112,11 +115,20 @@ class Canvas extends Component {
   }
 
   relativeCoordinatesForEvent(mouseEvent) {
+
     const boundingRect = this.refs.drawArea.getBoundingClientRect();
-    return Immutable.Map({
-      x: mouseEvent.clientX - boundingRect.left,
-      y: mouseEvent.clientY - boundingRect.top
-    });
+
+    if(!mouseEvent.clientX) {
+      return Immutable.Map({
+        x: mouseEvent.touches[0].clientX - boundingRect.left, 
+        y: mouseEvent.touches[0].clientY - boundingRect.top
+      })
+    } else {
+      return Immutable.Map({
+        x: mouseEvent.clientX - boundingRect.left,
+        y: mouseEvent.clientY - boundingRect.top
+      });
+    }
   }
 
   onToolbarClick() {
@@ -140,6 +152,8 @@ class Canvas extends Component {
           ref="drawArea"
           onMouseDown={this.handleMouseDown}
           onMouseMove={this.handleMouseMove}
+          touchStart={this.handleMouseDown}
+          touchMove={this.handleMouseDown}
         >
           <Drawing lines={this.props.lines} stroke={this.props.activeDrawingWidth} color={this.props.activeDrawingColor}/>
         </div>
