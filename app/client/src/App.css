@@ -8,12 +8,20 @@
 
 .editor-mirror.ace_editor {
   width: calc(100% - 345px);
-  height: 100vh; 
+  height: calc(100vh - 40px); 
   /*font-family: 'Courier,monospace' !important;*/
   font-size: 12px;
   float: left; 
   position: relative;
   left: 345px;
+}
+
+.editor-mirror-header {
+  left: 345px; 
+  position: relative;
+  width: calc(100% - 345px);
+  height: 40px; 
+  background-color: #555555;
 }
 
 .file-tree {
@@ -330,7 +338,7 @@
 }
 
 .toolbar {
-  width: 944px; 
+  width: 521px; 
   margin-left: auto;
   margin-right: auto;
   position: absolute;

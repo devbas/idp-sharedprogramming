@@ -11,7 +11,8 @@ const Toolbar = ({
   isRecording, 
   onCloseClick, 
   isPaused, 
-  onMouseLeave
+  onMouseLeave, 
+  closeVisible
 }) => (
   <div className="toolbar">
     <div className="toolbar-box animated slideInDown" onMouseLeave={onMouseLeave}>
@@ -44,9 +45,14 @@ const Toolbar = ({
         <div className="left save-icon inactive-icon" onClick={onSaveClick}></div>
       }
 
-      <div className="left toolbar-divider"></div>
+      {closeVisible &&
+        <span>
+          <div className="left toolbar-divider"></div>
 
-      <div className="left close-icon" onClick={onCloseClick}></div> 
+          <div className="left close-icon" onClick={onCloseClick}></div> 
+        </span>
+      }
+      
 
     </div>
   </div>

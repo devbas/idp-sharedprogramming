@@ -50,7 +50,8 @@ class Canvas extends Component {
       isDrawing: false, 
       color: false, 
       stroke: 30, 
-      color: '#f2994a'
+      color: '#f2994a', 
+      canvas: true 
     };
 
     this.handleMouseDown = this.handleMouseDown.bind(this);
@@ -69,7 +70,7 @@ class Canvas extends Component {
   componentWillUnmount() {
     document.removeEventListener("mouseup", this.handleMouseUp);
     document.removeEventListener("touchstart", this.handleMouseUp);
-    this.setState({ isDrawing: false })
+    this.setState({ isDrawing: false, canvas: false })
     // Remove Toolbar
     // Remove canvas
   }
@@ -147,16 +148,18 @@ class Canvas extends Component {
         <Link to={'/#' + window.location.hash.replace(/#/g, '')}>
           <div className="arrow arrow-left"></div>
         </Link>
-        <div
-          className="draw-area"
-          ref="drawArea"
-          onMouseDown={this.handleMouseDown}
-          onMouseMove={this.handleMouseMove}
-          touchStart={this.handleMouseDown}
-          touchMove={this.handleMouseDown}
-        >
-          <Drawing lines={this.props.lines} stroke={this.props.activeDrawingWidth} color={this.props.activeDrawingColor}/>
-        </div>
+        {this.state.canvas && 
+          <div
+            className="draw-area"
+            ref="drawArea"
+            onMouseDown={this.handleMouseDown}
+            onMouseMove={this.handleMouseMove}
+            touchStart={this.handleMouseDown}
+            touchMove={this.handleMouseDown}
+          >
+            <Drawing lines={this.props.lines} stroke={this.props.activeDrawingWidth} color={this.props.activeDrawingColor}/>
+          </div>
+        }
       </div>
     );
   }

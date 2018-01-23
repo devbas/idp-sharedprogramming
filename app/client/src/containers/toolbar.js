@@ -18,7 +18,8 @@ class Toolbar extends Component {
       isColorActive: false, 
       isRecording: false, 
       isPaused: false, 
-      isSaving: false
+      isSaving: false, 
+      closeVisible: true
     }
 
     this.onRecordClick = this.onRecordClick.bind(this)
@@ -27,6 +28,12 @@ class Toolbar extends Component {
     this.onSaveSubmit = this.onSaveSubmit.bind(this)
     this.onSaveCancel = this.onSaveCancel.bind(this)
     this.onMouseLeave = this.onMouseLeave.bind(this)
+  }
+
+  componentDidMount() {
+    if(window.location.pathname.includes('canvas')) {
+      this.setState({ closeVisible: false })
+    }
   }
 
   onRecordClick() {
@@ -96,6 +103,7 @@ class Toolbar extends Component {
           isPaused={this.props.isPauseActive}
           onMouseLeave={this.onMouseLeave}
           isDrawingActive={this.props.isDrawingActive}
+          closeVisible={this.state.closeVisible}
         />
       </div>
     )
