@@ -34,7 +34,7 @@ const Toolbar = ({
       }
 
       {!isPaused && !isRecording &&
-        <div className="left pause-icon inactive-icon" onClick={onPauseToggle}></div>      
+        <div className="left play-icon inactive-icon"></div>      
       }
 
       {isPaused &&
