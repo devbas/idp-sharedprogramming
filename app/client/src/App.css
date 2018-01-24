@@ -149,6 +149,7 @@
   bottom: 0; 
   position: absolute; 
   z-index: 999999;
+  background-color: rgba(000, 000, 000, 0.4)
 }
 
 .MyCursorClass {
@@ -222,7 +223,7 @@
   background-position: center;
   z-index: 9999999;
   background-repeat: no-repeat;
-  opacity: 0.4;
+  opacity: 0.7;
   transition: opacity 0.4s, width 0.4s;
   -webkit-transition: opacity 0.4s, width 0.4s; 
 }
@@ -244,7 +245,7 @@
   background-position: center;
   z-index: 9999999;
   background-repeat: no-repeat;
-  opacity: 0.4;
+  opacity: 0.7;
   transition: opacity 0.4s, width 0.4s;
   -webkit-transition: opacity 0.4s, width 0.4s; 
 }
@@ -262,9 +263,9 @@
   left: calc(50% - 25px);
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
-  background-image: url('./assets/images/arrow-bottom-thick.svg');
+  background-image: url('./assets/images/record-tooltip.svg');
   background-size: contain;
-  background-size: 20px;
+  background-size: 30px;
 }
 
 .arrow-right {
@@ -272,9 +273,9 @@
   right: 0;
   border-top-left-radius: 50px;
   border-bottom-left-radius: 50px;
-  background-image: url('./assets/images/arrow-right-thick.svg');
+  background-image: url('./assets/images/pen-inside.svg');
   background-size: contain;
-  background-size: 20px;
+  background-size: 30px;
 }
 
 .arrow-bottom {
@@ -282,9 +283,9 @@
   left: calc(50% - 25px);
   border-top-right-radius: 50px;
   border-top-left-radius: 50px;
-  background-image: url('./assets/images/arrow-top-thick.svg');
+  background-image: url('./assets/images/reload.svg');
   background-size: contain;
-  background-size: 20px;
+  background-size: 30px;
 }
 
 .arrow-left {
@@ -292,9 +293,9 @@
   left: 0;
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
-  background-image: url('./assets/images/arrow-left-thick.svg');
+  background-image: url('./assets/images/play-outline.svg');
   background-size: contain;
-  background-size: 20px;
+  background-size: 30px;
   position: fixed;
 }
 

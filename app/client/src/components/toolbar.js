@@ -59,8 +59,6 @@ const Toolbar = ({
             <div className="left save-icon inactive-icon"></div>
           }
 
-          <div className="left toolbar-divider"></div>
-
           <div className="left close-icon" onClick={onToolbarToggleClick}></div> 
           
 
