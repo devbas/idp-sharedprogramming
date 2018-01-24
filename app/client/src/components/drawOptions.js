@@ -17,7 +17,7 @@ const DrawOptions = ({
 
       {mainIsActive &&
         <span>
-          <div class="fixed-action-btn">
+          <div className="fixed-action-btn">
 
             <ul>
               <li>
@@ -67,7 +67,7 @@ const DrawOptions = ({
       }
 
       {!mainIsActive &&
-        <div class="fixed-action-btn">
+        <div className="fixed-action-btn">
           <a id="btn-main" className="btn-primary btn-floating btn-large red reverse-animation" onClick={mainOnClick}></a>
         </div>
       }

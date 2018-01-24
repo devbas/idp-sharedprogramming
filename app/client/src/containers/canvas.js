@@ -7,6 +7,7 @@ import Toolbar from './toolbar';
 import * as PaintActions from '../actions/paint'; 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'; 
+import DrawingOptions from './drawOptions';
 var Immutable = require("immutable");
 var installDevTools = require("immutable-devtools");
 installDevTools(Immutable);
@@ -24,7 +25,7 @@ function DrawingLine({ line, stroke, color }) {
         .join(" L "); 
       
     const colorFormatted = '#' + line.get('color')
-    return <path className="path" d={pathData} stroke-width={line.get('width')} stroke={colorFormatted} />;
+    return <path className="path" d={pathData} strokeWidth={line.get('width')} stroke={colorFormatted} />;
   } else {
     return null
   }
@@ -51,7 +52,8 @@ class Canvas extends Component {
       color: false, 
       stroke: 30, 
       color: '#f2994a', 
-      canvas: true 
+      canvas: true, 
+      isCanvasPage: window.location.pathname.includes('canvas') ? true : false
     };
 
     this.handleMouseDown = this.handleMouseDown.bind(this);
@@ -145,20 +147,25 @@ class Canvas extends Component {
   render() {
     return (
       <div className="canvas-box">
-        <Link to={'/#' + window.location.hash.replace(/#/g, '')}>
-          <div className="arrow arrow-left"></div>
-        </Link>
+        {this.state.isCanvasPage &&
+          <Link to={'/#' + window.location.hash.replace(/#/g, '')}>
+            <div className="arrow arrow-left"></div>
+          </Link>
+        }
+        
         {this.state.canvas && 
           <div
             className="draw-area"
             ref="drawArea"
             onMouseDown={this.handleMouseDown}
             onMouseMove={this.handleMouseMove}
-            touchStart={this.handleMouseDown}
-            touchMove={this.handleMouseDown}
           >
             <Drawing lines={this.props.lines} stroke={this.props.activeDrawingWidth} color={this.props.activeDrawingColor}/>
           </div>
+        }
+
+        {this.state.isCanvasPage &&
+          <DrawingOptions/>
         }
       </div>
     );

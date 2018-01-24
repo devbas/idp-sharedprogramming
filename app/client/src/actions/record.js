@@ -21,6 +21,13 @@ export function setIdentifier({ identifier }) {
   }
 }
 
+export function toggleToolbar({ isToolbarActive }) {
+  return {
+    type: types.TOGGLE_TOOLBAR, 
+    isToolbarActive
+  }
+}
+
 export function boundToggleRecording() {
   return (dispatch, getState) => {
     dispatch(toggleRecording({ isRecordingActive: getState().isRecordingActive }))
@@ -42,5 +49,11 @@ export function boundSetPause(status) {
 export function boundSetIdentifier(identifier) {
   return (dispatch, getState) => {
     dispatch(setIdentifier({ identifier: identifier }))
+  }
+}
+
+export function boundToggleToolbar() {
+  return (dispatch, getState) => {
+    dispatch(toggleToolbar({ isToolbarActive: getState().isToolbarActive }))
   }
 }

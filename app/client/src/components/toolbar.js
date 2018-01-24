@@ -9,53 +9,65 @@ const Toolbar = ({
   onHelpClick,
   strokeValue, 
   isRecording, 
-  onCloseClick, 
+  onToolbarToggleClick, 
   isPaused, 
   onMouseLeave, 
-  closeVisible
+  isToolbarActive
 }) => (
-  <div className="toolbar">
-    <div className="toolbar-box animated slideInDown" onMouseLeave={onMouseLeave}>
+  <span>
+    {!isToolbarActive && !isRecording &&
+      <div className="arrow arrow-top" onClick={onToolbarToggleClick}></div>
+    }
 
-      {isRecording &&
-        <div className="left record-icon" onClick={onRecordClick}></div>
-      }
+    {!isToolbarActive && isRecording &&
+      <div className="toolbar-tooltip" onClick={onToolbarToggleClick}>
+        <div className="label">recording</div>
+        <div className="recording"></div>
+        <div className="arrow"></div>
+      </div>
+    }
 
-      {!isRecording &&
-        <div className="left recording-icon" onClick={onRecordClick}></div>
-      }
+    {isToolbarActive &&
+      <div className="toolbar">
+        <div className="toolbar-box animated slideInDown" onMouseLeave={onMouseLeave}>
 
-      {isPaused &&
-        <div className="left play-icon" onClick={onPauseToggle}></div>    
-      }
-      
-      {!isPaused && isRecording &&
-        <div className="left pause-icon" onClick={onPauseToggle}></div>      
-      }
+          {isRecording &&
+            <div className="left record-icon" onClick={onRecordClick}></div>
+          }
 
-      {!isPaused && !isRecording &&
-        <div className="left play-icon inactive-icon"></div>      
-      }
+          {!isRecording &&
+            <div className="left recording-icon" onClick={onRecordClick}></div>
+          }
 
-      {isPaused &&
-        <div className="left save-icon" onClick={onSaveClick}></div>
-      }
+          {isPaused && isRecording && 
+            <div className="left play-icon" onClick={onPauseToggle}></div>    
+          }
+          
+          {!isPaused && isRecording &&
+            <div className="left pause-icon" onClick={onPauseToggle}></div>      
+          }
 
-      {!isPaused &&
-        <div className="left save-icon inactive-icon" onClick={onSaveClick}></div>
-      }
+          {!isRecording && 
+            <div className="left play-icon inactive-icon"></div>      
+          }
 
-      {closeVisible &&
-        <span>
+          {isPaused &&
+            <div className="left save-icon" onClick={onSaveClick}></div>
+          }
+
+          {!isPaused &&
+            <div className="left save-icon inactive-icon"></div>
+          }
+
           <div className="left toolbar-divider"></div>
 
-          <div className="left close-icon" onClick={onCloseClick}></div> 
-        </span>
-      }
-      
+          <div className="left close-icon" onClick={onToolbarToggleClick}></div> 
+          
 
-    </div>
-  </div>
+        </div>
+      </div>
+    }
+  </span>
 )
 
 //      <div className="left settings-icon" onClick={onSettingsClick}></div> 

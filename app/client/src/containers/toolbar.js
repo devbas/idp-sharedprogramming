@@ -18,8 +18,7 @@ class Toolbar extends Component {
       isColorActive: false, 
       isRecording: false, 
       isPaused: false, 
-      isSaving: false, 
-      closeVisible: true
+      isSaving: false
     }
 
     this.onRecordClick = this.onRecordClick.bind(this)
@@ -28,12 +27,10 @@ class Toolbar extends Component {
     this.onSaveSubmit = this.onSaveSubmit.bind(this)
     this.onSaveCancel = this.onSaveCancel.bind(this)
     this.onMouseLeave = this.onMouseLeave.bind(this)
+    this.onCloseHandle = this.onCloseHandle.bind(this)
   }
 
   componentDidMount() {
-    if(window.location.pathname.includes('canvas')) {
-      this.setState({ closeVisible: false })
-    }
   }
 
   onRecordClick() {
@@ -49,7 +46,7 @@ class Toolbar extends Component {
 
   onPauseToggle() {
 
-    this.props.actions.boundToggleRecording();
+    //this.props.actions.boundToggleRecording();
     this.props.actions.boundTogglePause();
 
   }
@@ -82,6 +79,11 @@ class Toolbar extends Component {
     console.log('mouse has left the div!');*/
   }
 
+  onCloseHandle() {
+    console.log('lets close this')
+    this.props.actions.boundToggleToolbar()
+  }
+
   render() {
     return(
       <div>
@@ -99,11 +101,11 @@ class Toolbar extends Component {
           onPauseToggle={this.onPauseToggle}
           onSaveClick={this.onSaveClick}
           isRecording={this.props.isRecordingActive}
-          onCloseClick={this.props.onCloseClick}
+          onToolbarToggleClick={this.onCloseHandle}
           isPaused={this.props.isPauseActive}
           onMouseLeave={this.onMouseLeave}
           isDrawingActive={this.props.isDrawingActive}
-          closeVisible={this.state.closeVisible}
+          isToolbarActive={this.props.isToolbarActive}
         />
       </div>
     )
@@ -117,7 +119,8 @@ function mapStateToProps(state) {
     activeDrawingWidth: state.activeDrawingWidth, 
     isDrawingActive: state.isDrawingActive, 
     isRecordingActive: state.isRecordingActive, 
-    isPauseActive: state.isPauseActive
+    isPauseActive: state.isPauseActive, 
+    isToolbarActive: state.isToolbarActive
 	}
 } 
 

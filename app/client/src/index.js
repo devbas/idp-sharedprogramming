@@ -13,7 +13,7 @@ new Promise((resolve, reject) => {
   persistStore(store, {}, () => {
     console.log('store persisted');
 	  resolve();
-  }).purge()
+  }).purge();
 }).then(() => {
   ReactDOM.render(
     <Provider store={store}>

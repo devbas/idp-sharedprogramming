@@ -24,18 +24,6 @@ const Editor = ({
   currentFileOpen
  }) => (
   <div className="editor">
-
-    {!showToolbar && !isRecording &&
-      <div className="arrow arrow-top" onClick={onToolbarToggleClick}></div>
-    }
-
-    {!showToolbar && isRecording &&
-      <div className="toolbar-tooltip" onClick={onToolbarToggleClick}>
-        <div className="label">recording</div>
-        <div className="recording"></div>
-        <div className="arrow"></div>
-      </div>
-    }
     
     <Link to={'/canvas/#' + activeHash}>
       <div className="arrow arrow-right"></div>
@@ -54,12 +42,8 @@ const Editor = ({
     {showTree &&
       <Tree onTreeClose={onTreeToggleClick}/>
     }
-
-    {showToolbar &&
-      <div>
-        <Toolbar onToolbarEditClick={onToolbarEditClick} onCloseClick={onToolbarToggleClick}/>
-      </div>
-    }
+    
+    <Toolbar/>
 
     {canvasActive &&
       <div>
@@ -76,7 +60,7 @@ const Editor = ({
           <span className="file-label">TodoList</span>
           
           <div className="level left">
-            <div className="left full-width item" onClick={() => loadInEditor('index.html')}>
+            <div className="left full-width item">
               <div className="html-icon"></div>
               <span className="file-label">index.html</span>
             </div>
@@ -86,6 +70,7 @@ const Editor = ({
         </div>
       </div>
     </div>
+    <div className="editor-mirror-header"></div>
     <div className="editor-mirror" id="editor-mirror">
       <div ref={updateRef} style={{width: '100%', height: '100%'}}></div>
     </div>

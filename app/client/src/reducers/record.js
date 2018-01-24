@@ -17,6 +17,14 @@ export const isPauseActive = createReducer(false, {
   }
 })
 
+export const isToolbarActive = createReducer(false, {
+  [types.TOGGLE_TOOLBAR](state, action) {
+    let newState = !action.isToolbarActive
+
+    return newState
+  }
+})
+
 export const currentIdentifier = createReducer(false, {
   [types.SET_IDENTIFIER](state, action) {
     let newState = action.identifier
