@@ -8,7 +8,7 @@ const Reload = ({ url, onEditorToggleClick, activeHash, iframeAllowed}) => (
   <div className="reload-box">
     <div className="header">
       <Link to={'/#' + activeHash}>
-        <div className="arrow arrow-top" onClick={onEditorToggleClick}></div>
+        <div className="arrow arrow-top arrow-editor" onClick={onEditorToggleClick}></div>
       </Link>
     </div>
     <div className="iframe-box">

@@ -60,19 +60,32 @@ class Editor extends Component {
 
   componentDidMount() {
     
+    //let langTools = brace.require("ace/ext/language_tools");
     this.editor = brace.edit('editor-mirror'); 
     this.editor.setOptions({
       mode: 'ace/mode/html',
       theme: 'ace/theme/monokai',
       fontSize: 13,
       tabSize: 2,
-      enableBasicAutocompletion: false, 
-      enableLiveAutocompletion: false
+      enableBasicAutocompletion: true, 
+      enableSnippets: true,
+      enableTern: {
+        defs: ['browser', 'ecma5'],
+        plugins: {
+          doc_comment: {
+            fullDocs: true
+          }
+        }
+      }
     }) 
 
     this.session = this.editor.getSession();
     this.session.setUseWrapMode(true);
     this.session.setUseWorker(false);
+
+    //var TernServer = brace.require("ace/tern/server").TernServer;
+	  //var defs = [ternEcma5Def];
+	  //var ternServer = new TernServer({defs: defs});
 
     let firepadRef = this.getFirebaseRef();
 

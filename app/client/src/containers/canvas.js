@@ -146,28 +146,46 @@ class Canvas extends Component {
 
   render() {
     return (
-      <div className="canvas-box">
+      <span>
         {this.state.isCanvasPage &&
-          <Link to={'/#' + window.location.hash.replace(/#/g, '')}>
-            <div className="arrow arrow-left"></div>
-          </Link>
-        }
-        
-        {this.state.canvas && 
-          <div
-            className="draw-area"
-            ref="drawArea"
-            onMouseDown={this.handleMouseDown}
-            onMouseMove={this.handleMouseMove}
-          >
-            <Drawing lines={this.props.lines} stroke={this.props.activeDrawingWidth} color={this.props.activeDrawingColor}/>
+          <div className="canvas-box">
+            <Link to={'/#' + window.location.hash.replace(/#/g, '')}>
+              <div className="arrow arrow-left"></div>
+            </Link>
+            
+            {this.state.canvas && 
+              <div
+                className="draw-area"
+                ref="drawArea"
+                onMouseDown={this.handleMouseDown}
+                onMouseMove={this.handleMouseMove}
+              >
+                <Drawing lines={this.props.lines} stroke={this.props.activeDrawingWidth} color={this.props.activeDrawingColor}/>
+              </div>
+            }
+
+            <DrawingOptions toolsActive={true}/>
+
           </div>
         }
 
-        {this.state.isCanvasPage &&
-          <DrawingOptions/>
+        {!this.state.isCanvasPage &&
+          <div className="canvas-box" style={{'backgroundColor': 'rgba(000, 000, 000, 0.4)'}}>
+
+            {this.state.canvas && 
+              <div
+                className="draw-area"
+                ref="drawArea"
+                onMouseDown={this.handleMouseDown}
+                onMouseMove={this.handleMouseMove}
+              >
+                <Drawing lines={this.props.lines} stroke={this.props.activeDrawingWidth} color={this.props.activeDrawingColor}/>
+              </div>
+            }
+          </div>
         }
-      </div>
+        
+      </span>
     );
   }
 }

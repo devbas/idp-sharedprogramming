@@ -149,7 +149,6 @@
   bottom: 0; 
   position: absolute; 
   z-index: 999999;
-  background-color: rgba(000, 000, 000, 0.4)
 }
 
 .MyCursorClass {
@@ -248,6 +247,10 @@
   opacity: 0.7;
   transition: opacity 0.4s, width 0.4s;
   -webkit-transition: opacity 0.4s, width 0.4s; 
+}
+
+.arrow.arrow-editor {
+  background-image: url('./assets/images/code-editor.svg')
 }
 
 .arrow-top:hover, .arrow-bottom:hover {
