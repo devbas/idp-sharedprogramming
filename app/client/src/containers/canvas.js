@@ -150,7 +150,7 @@ class Canvas extends Component {
         {this.state.isCanvasPage &&
           <div className="canvas-box">
             <Link to={'/#' + window.location.hash.replace(/#/g, '')}>
-              <div className="arrow arrow-left"></div>
+              <div className="arrow arrow-left arrow-editor"></div>
             </Link>
             
             {this.state.canvas && 
